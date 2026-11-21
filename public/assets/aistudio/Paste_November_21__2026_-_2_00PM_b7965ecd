@@ -1,0 +1,4406 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="blue-sea">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Ariel không biết bơi — Trang 3</title>
+
+  <!-- Google Fonts: Cormorant Garamond (Serif thơ mộng) & Plus Jakarta Sans (UI sắc nét) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =========================================================================
+       1. HỆ THỐNG 2 CHẾ ĐỘ MÀU: BIỂN XANH (MẶC ĐỊNH) & RED SEA
+       - Tuyệt đối KHÔNG dùng backdrop-filter, <canvas> hay box-shadow nhiều lớp
+         để giữ vững 60fps mượt mà trên điện thoại.
+       ========================================================================= */
+    :root,
+    html[data-theme="blue-sea"] {
+      --bg-top: #0a1b33;
+      --bg-mid: #071326;
+      --bg-deep: #050d1a;
+
+      --glass-bg: rgba(7, 20, 39, 0.90);
+      --glass-panel-bg: rgba(6, 17, 34, 0.96);
+      --glass-elevated: rgba(11, 28, 52, 0.96);
+      --glass-highlight: rgba(186, 236, 250, 0.14);
+
+      --card-top: #0b213d;
+      --card-bottom: #040d1a;
+      --card-back-top: #091d36;
+      --card-back-bottom: #030914;
+      --scrim: rgba(2, 7, 15, 0.85);
+
+      --text-main: #eef7fc;
+      --text-soft: rgba(238, 247, 252, 0.78);
+      --text-muted: rgba(238, 247, 252, 0.52);
+      --text-dim: rgba(238, 247, 252, 0.30);
+
+      --accent: #a6e3f5;
+      --accent-mid: #4eb2d4;
+      --accent-glow: rgba(166, 227, 245, 0.22);
+      --ray-color: rgba(166, 227, 245, 0.11);
+      --ray-soft: rgba(166, 227, 245, 0.035);
+
+      --shell-stroke: #b5e7f7;
+      --border-subtle: rgba(166, 227, 245, 0.15);
+      --border-card: rgba(166, 227, 245, 0.28);
+      --border-card-center: rgba(186, 236, 250, 0.72);
+      --border-inner: rgba(166, 227, 245, 0.16);
+      --pearl-rim: rgba(228, 249, 255, 0.76);
+      --sheen-color: rgba(220, 248, 255, 0.36);
+      --crack-color: #d6f5fc;
+
+      --tag-bg: rgba(166, 227, 245, 0.06);
+      --tag-border: rgba(166, 227, 245, 0.25);
+      --btn-active-bg: rgba(78, 178, 212, 0.20);
+      --center-shadow: 0 18px 34px rgba(0, 0, 0, 0.62);
+      --depth-darkness: 0.12;
+    }
+
+    html[data-theme="red-sea"] {
+      --bg-top: #2b0a14;
+      --bg-mid: #20070f;
+      --bg-deep: #17050a;
+
+      --glass-bg: rgba(36, 9, 18, 0.90);
+      --glass-panel-bg: rgba(28, 6, 13, 0.96);
+      --glass-elevated: rgba(46, 11, 22, 0.96);
+      --glass-highlight: rgba(246, 194, 205, 0.14);
+
+      --card-top: #310b17;
+      --card-bottom: #140409;
+      --card-back-top: #290913;
+      --card-back-bottom: #100307;
+      --scrim: rgba(11, 2, 5, 0.86);
+
+      --text-main: #fbf1f3;
+      --text-soft: rgba(251, 241, 243, 0.78);
+      --text-muted: rgba(251, 241, 243, 0.52);
+      --text-dim: rgba(251, 241, 243, 0.30);
+
+      --accent: #f2b4c2;
+      --accent-mid: #c85876;
+      --accent-glow: rgba(242, 180, 194, 0.24);
+      --ray-color: rgba(242, 180, 194, 0.11);
+      --ray-soft: rgba(242, 180, 194, 0.035);
+
+      --shell-stroke: #f5c3ce;
+      --border-subtle: rgba(242, 180, 194, 0.16);
+      --border-card: rgba(242, 180, 194, 0.28);
+      --border-card-center: rgba(247, 204, 214, 0.72);
+      --border-inner: rgba(242, 180, 194, 0.16);
+      --pearl-rim: rgba(255, 232, 238, 0.74);
+      --sheen-color: rgba(255, 224, 233, 0.36);
+      --crack-color: #fbd9e2;
+
+      --tag-bg: rgba(242, 180, 194, 0.06);
+      --tag-border: rgba(242, 180, 194, 0.25);
+      --btn-active-bg: rgba(200, 88, 118, 0.22);
+      --center-shadow: 0 18px 34px rgba(0, 0, 0, 0.66);
+      --depth-darkness: 0.12;
+    }
+
+    /* =========================================================================
+       2. RESET & KHUNG TOÀN MÀN HÌNH (100vw × 100dvh, CHỐNG TRÀN NGANG)
+       ========================================================================= */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: var(--bg-deep);
+      color: var(--text-main);
+      font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      transition: background-color 0.5s ease, color 0.4s ease;
+    }
+
+    button, input, textarea, a {
+      font-family: inherit;
+      color: inherit;
+    }
+
+    button {
+      border: none;
+      background: none;
+      cursor: pointer;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    a { text-decoration: none; }
+
+    .font-serif {
+      font-family: "Cormorant Garamond", Georgia, serif;
+    }
+
+    .tabular {
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.04em;
+    }
+
+    /* =========================================================================
+       3. HẬU CẢNH ĐẠI DƯƠNG + NỀN VỎ SÒ KIẾN TRÚC & HẢI ĐỒ 1PX CỠ LỚN
+       ========================================================================= */
+    .ocean-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 52%, var(--bg-deep) 100%);
+      transition: background 0.55s ease;
+    }
+
+    .god-rays {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .god-ray {
+      position: absolute;
+      top: -18%;
+      width: 40vw;
+      max-width: 430px;
+      height: 118vh;
+      background: linear-gradient(180deg, var(--ray-color) 0%, var(--ray-soft) 48%, transparent 84%);
+      transform-origin: top center;
+      animation: rayFloat 13s ease-in-out infinite alternate;
+      will-change: opacity;
+    }
+
+    .god-ray-1 { left: 10%; transform: rotate(-16deg); }
+    .god-ray-2 { right: 6%; width: 32vw; max-width: 340px; transform: rotate(14deg); animation-delay: -6.5s; opacity: 0.65; }
+
+    @keyframes rayFloat {
+      0% { opacity: 0.40; }
+      100% { opacity: 0.88; }
+    }
+
+    .depth-veil {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 42%, transparent 20%, #000000 118%);
+      opacity: var(--depth-darkness);
+      transition: opacity 0.6s ease;
+    }
+
+    /* Nền Vỏ Sò + Vòng Cung Hải Đồ cỡ lớn nằm ngay phía sau quạt bài */
+    .shell-backdrop {
+      position: absolute;
+      left: 50%;
+      top: 47%;
+      width: min(820px, 92vw);
+      aspect-ratio: 840 / 660;
+      transform: translate3d(-50%, -46%, 0);
+      z-index: 2;
+      pointer-events: none;
+      color: var(--shell-stroke);
+      transition: color 0.5s ease;
+    }
+
+    .shell-backdrop svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      overflow: visible;
+    }
+
+    #nautical-ring {
+      transform-origin: 420px 520px;
+      will-change: transform;
+    }
+
+    /* Vòng hào quang 1px phát nhịp sau lá bài khi rút lên trong nhịp 3 Câu cá */
+    .gacha-halo {
+      position: absolute;
+      left: 50%;
+      top: 45%;
+      width: 340px;
+      height: 340px;
+      margin-left: -170px;
+      margin-top: -170px;
+      border-radius: 50%;
+      border: 1px solid var(--accent);
+      pointer-events: none;
+      z-index: 5;
+      opacity: 0;
+      transform: scale(0.74);
+      will-change: transform, opacity;
+      transition: opacity 0.65s ease, transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .gacha-halo::after {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border-radius: 50%;
+      border: 1px dashed var(--border-card);
+    }
+
+    .gacha-halo.is-active {
+      opacity: 0.44;
+      transform: scale(1.04);
+      animation: haloPulse 2.2s ease-in-out infinite alternate;
+    }
+
+    @keyframes haloPulse {
+      0% { opacity: 0.24; transform: scale(0.96); }
+      100% { opacity: 0.54; transform: scale(1.09); }
+    }
+
+    /* Hai vòng sóng 1px đồng tâm bung tỏa (đổi màu & khoảnh khắc lật bài Câu cá) */
+    .wave-ring {
+      position: fixed;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 1px solid var(--accent);
+      pointer-events: none;
+      z-index: 400;
+      opacity: 0;
+      transform: translate3d(-50%, -50%, 0) scale(0.25);
+      will-change: transform, opacity;
+    }
+
+    .wave-ring.is-firing {
+      animation: waveRipple 1.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .wave-ring.is-soft {
+      border-color: var(--pearl-rim);
+      animation: waveRippleSoft 1.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes waveRipple {
+      0% { opacity: 0.90; transform: translate3d(-50%, -50%, 0) scale(0.4); }
+      50% { opacity: 0.46; }
+      100% { opacity: 0; transform: translate3d(-50%, -50%, 0) scale(48); }
+    }
+
+    @keyframes waveRippleSoft {
+      0% { opacity: 0.68; transform: translate3d(-50%, -50%, 0) scale(0.35); }
+      55% { opacity: 0.32; }
+      100% { opacity: 0; transform: translate3d(-50%, -50%, 0) scale(36); }
+    }
+
+    /* =========================================================================
+       4. HAI VIÊN NGỌC ĐỔI MÀU GÓC DƯỚI PHẢI (KHÔNG CHỮ, NGOÀI MỌI KHUNG KÍNH)
+       ========================================================================= */
+    .theme-orbs {
+      position: fixed;
+      right: max(16px, env(safe-area-inset-right));
+      bottom: max(14px, env(safe-area-inset-bottom));
+      z-index: 120;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .orb-btn {
+      position: relative;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.38);
+      opacity: 0.68;
+      transition: transform 0.26s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.22s ease, border-color 0.22s ease;
+    }
+
+    .orb-btn::after {
+      content: "";
+      position: absolute;
+      top: 4px;
+      left: 5px;
+      width: 6px;
+      height: 3.5px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.78);
+      transform: rotate(-28deg);
+      pointer-events: none;
+    }
+
+    .orb-blue {
+      background: radial-gradient(circle at 30% 28%, #e4fbff 0%, #41a8cf 56%, #051a33 100%);
+      box-shadow: 0 0 12px rgba(166, 227, 245, 0.45);
+    }
+
+    .orb-red {
+      background: radial-gradient(circle at 30% 28%, #ffe1ea 0%, #c9466a 56%, #2a0612 100%);
+      box-shadow: 0 0 12px rgba(242, 180, 194, 0.45);
+    }
+
+    .orb-btn:hover { opacity: 1; transform: scale(1.14); }
+    .orb-btn:active { transform: scale(0.9); }
+    .orb-btn.is-active {
+      opacity: 1;
+      transform: scale(1.16);
+      border-color: #ffffff;
+    }
+
+    /* =========================================================================
+       5. BỐ CỤC CHÍNH, THANH KÍNH TRÊN CÙNG & DÒNG THÔNG SỐ TẠP CHÍ 2 ĐẦU
+       ========================================================================= */
+    .page-shell {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100dvh;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .topbar-outer {
+      position: relative;
+      z-index: 80;
+      width: 100%;
+      padding: 10px 14px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 7px;
+      flex-shrink: 0;
+    }
+
+    /* Thanh kính chung 1 hàng duy nhất (max-width 900px) */
+    .glass-bar {
+      width: 100%;
+      max-width: 900px;
+      height: 46px;
+      padding: 0 8px 0 10px;
+      border-radius: 14px;
+      background-color: var(--glass-bg);
+      border: 1px solid var(--border-card);
+      box-shadow: inset 0 1px 0 var(--glass-highlight);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background-color 0.45s ease, border-color 0.45s ease;
+    }
+
+    /* Cụm 1: Tìm kiếm */
+    .bar-search {
+      flex: 1;
+      min-width: 78px;
+      height: 32px;
+      padding: 0 9px;
+      border-radius: 9px;
+      background-color: var(--tag-bg);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: border-color 0.22s ease;
+    }
+
+    .bar-search:focus-within { border-color: var(--border-card-center); }
+    .bar-search svg { flex-shrink: 0; color: var(--text-muted); }
+
+    .bar-search input {
+      width: 100%;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--text-main);
+    }
+
+    .bar-search input::placeholder { color: var(--text-dim); }
+
+    .search-clear-btn {
+      display: none;
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      color: var(--text-muted);
+      font-size: 11px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .search-clear-btn.is-shown { display: inline-flex; }
+    .search-clear-btn:hover { color: var(--text-main); }
+
+    .bar-divider {
+      width: 1px;
+      height: 20px;
+      background-color: var(--border-subtle);
+      flex-shrink: 0;
+    }
+
+    /* Cụm 2: Nút Mục lục ▾ */
+    .dir-btn {
+      flex-shrink: 0;
+      height: 32px;
+      padding: 0 11px;
+      border-radius: 9px;
+      border: 1px solid var(--border-subtle);
+      background-color: transparent;
+      color: var(--text-soft);
+      font-size: 11.5px;
+      font-weight: 400;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      max-width: 150px;
+      transition: border-color 0.22s ease, color 0.22s ease, background-color 0.22s ease;
+    }
+
+    .dir-btn:hover,
+    .dir-btn.is-open,
+    .dir-btn.has-filter {
+      border-color: var(--border-card-center);
+      color: var(--text-main);
+      background-color: var(--tag-bg);
+    }
+
+    .dir-btn-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .dir-caret {
+      font-size: 9px;
+      color: var(--accent);
+      transition: transform 0.22s ease;
+      flex-shrink: 0;
+    }
+
+    .dir-btn.is-open .dir-caret { transform: rotate(180deg); }
+
+    /* Cụm 3: Đĩa nhạc con cá xoay tròn + nút dừng/phát */
+    .music-cluster {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 2px 5px 2px 3px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background-color: var(--tag-bg);
+    }
+
+    .fish-disc-btn {
+      position: relative;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--border-card);
+      background: radial-gradient(circle at 50% 50%, var(--card-top) 0%, var(--bg-deep) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      transition: border-color 0.22s ease;
+    }
+
+    .fish-disc-btn:hover { border-color: var(--accent); }
+
+    .fish-disc-spinner {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: discSpin 9.5s linear infinite;
+      animation-play-state: paused;
+      will-change: transform;
+    }
+
+    .fish-disc-btn.is-playing .fish-disc-spinner {
+      animation-play-state: running;
+    }
+
+    @keyframes discSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .music-toggle-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      color: var(--text-soft);
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .music-toggle-btn:hover {
+      color: var(--text-main);
+      background-color: var(--btn-active-bg);
+    }
+
+    .music-toggle-btn.is-playing { color: var(--accent); }
+
+    /* Cụm 4: Nút ☰ bên phải */
+    .menu-btn {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.22s ease, color 0.22s ease, background-color 0.22s ease;
+    }
+
+    .menu-btn:hover,
+    .menu-btn.is-open {
+      border-color: var(--border-card-center);
+      color: var(--text-main);
+      background-color: var(--tag-bg);
+    }
+
+    /* Dòng thông số tạp chí cân 2 đầu + trích dẫn xoay mỗi 10 giây */
+    .editorial-subbar {
+      width: 100%;
+      max-width: 900px;
+      padding: 2px 6px 8px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .subbar-left {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+    }
+
+    .brand-whisper {
+      font-size: 1.08rem;
+      font-style: italic;
+      font-weight: 500;
+      color: var(--text-main);
+      letter-spacing: 0.02em;
+    }
+
+    .live-card-status {
+      font-size: 10.5px;
+      font-weight: 300;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .live-card-status strong {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .active-filter-pill {
+      display: none;
+      align-items: center;
+      gap: 5px;
+      padding: 1.5px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border-card);
+      background-color: var(--btn-active-bg);
+      color: var(--text-main);
+      font-size: 10px;
+    }
+
+    .active-filter-pill.is-shown { display: inline-flex; }
+
+    .active-filter-pill button {
+      font-size: 9.5px;
+      color: var(--accent);
+      padding-left: 2px;
+    }
+
+    /* Trích dẫn mảnh bên phải tự xoay 10s/lần với hiệu ứng mờ & trôi nhẹ 650ms */
+    .subbar-quote-wrap {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .rotating-quote {
+      font-size: 0.96rem;
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1.32;
+      color: var(--text-soft);
+      text-align: right;
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, transform;
+    }
+
+    .rotating-quote.is-fading-out {
+      opacity: 0;
+      transform: translate3d(0, -5px, 0);
+    }
+
+    .rotating-quote.is-pre-enter {
+      opacity: 0;
+      transform: translate3d(0, 6px, 0);
+      transition: none;
+    }
+
+    /* =========================================================================
+       6. POPOVER MỤC LỤC 25 TAG (3 NHÓM) & DANH SÁCH NHẠC ĐĨA CÁ
+       ========================================================================= */
+    .popover-panel {
+      position: fixed;
+      top: calc(62px + env(safe-area-inset-top));
+      z-index: 150;
+      border-radius: 14px;
+      background-color: var(--glass-panel-bg);
+      border: 1px solid var(--border-card);
+      box-shadow: inset 0 1px 0 var(--glass-highlight), 0 18px 36px rgba(0, 0, 0, 0.56);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translate3d(0, -8px, 0) scale(0.98);
+      transition: opacity 0.22s ease, transform 0.24s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.22s ease;
+    }
+
+    .popover-panel.is-open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    .directory-popover {
+      left: 50%;
+      width: min(760px, calc(100vw - 24px));
+      margin-left: calc(min(760px, calc(100vw - 24px)) / -2);
+      max-height: min(72dvh, 520px);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 14px 16px 16px;
+    }
+
+    .dir-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 10px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .dir-title {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .dir-all-btn {
+      padding: 4px 11px;
+      border-radius: 999px;
+      border: 1px solid var(--border-card);
+      background-color: var(--tag-bg);
+      color: var(--text-soft);
+      font-size: 11px;
+      transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .dir-all-btn.is-active,
+    .dir-all-btn:hover {
+      border-color: var(--accent);
+      background-color: var(--btn-active-bg);
+      color: var(--text-main);
+    }
+
+    .tag-groups-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+
+    .tag-group-title {
+      font-size: 10.5px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 7px;
+    }
+
+    .tag-group-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .dir-tag-btn {
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border-subtle);
+      background-color: var(--tag-bg);
+      color: var(--text-soft);
+      font-size: 11.5px;
+      font-weight: 300;
+      transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .dir-tag-btn:hover {
+      border-color: var(--border-card-center);
+      color: var(--text-main);
+    }
+
+    .dir-tag-btn.is-active {
+      border-color: var(--accent);
+      background-color: var(--btn-active-bg);
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    .playlist-popover {
+      right: max(14px, calc((100vw - 900px) / 2 + 46px));
+      width: min(290px, calc(100vw - 24px));
+      padding: 12px;
+    }
+
+    .playlist-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 8px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .playlist-head-title {
+      font-size: 10.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .playlist-state {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .playlist-items {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .track-btn {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      text-align: left;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .track-btn:hover {
+      background-color: var(--tag-bg);
+      border-color: var(--border-subtle);
+    }
+
+    .track-btn.is-current {
+      background-color: var(--btn-active-bg);
+      border-color: var(--border-card);
+    }
+
+    .track-meta {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .track-name {
+      font-size: 12px;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .track-sub {
+      font-size: 10px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .track-indicator {
+      flex-shrink: 0;
+      font-size: 11px;
+      color: var(--accent);
+    }
+
+    /* =========================================================================
+       7. KHUNG KÍNH THỨ 2 — MENU OVERLAY (BẬT KHI BẤM ☰)
+       ========================================================================= */
+    .menu-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 260;
+      background-color: var(--scrim);
+      display: flex;
+      justify-content: flex-end;
+      padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) 12px;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.24s ease, visibility 0.24s ease;
+    }
+
+    .menu-overlay.is-open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .menu-drawer {
+      width: min(360px, 100%);
+      height: 100%;
+      border-radius: 18px;
+      background-color: var(--glass-panel-bg);
+      border: 1px solid var(--border-card);
+      box-shadow: inset 0 1px 0 var(--glass-highlight), 0 24px 48px rgba(0, 0, 0, 0.65);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: translate3d(20px, 0, 0) scale(0.98);
+      opacity: 0;
+      transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.24s ease;
+    }
+
+    .menu-overlay.is-open .menu-drawer {
+      transform: translate3d(0, 0, 0) scale(1);
+      opacity: 1;
+    }
+
+    .menu-head {
+      padding: 16px 18px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .menu-head-title {
+      font-size: 1.34rem;
+      font-style: italic;
+      font-weight: 500;
+      color: var(--text-main);
+    }
+
+    .menu-close-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-soft);
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .menu-close-btn:hover {
+      border-color: var(--border-card-center);
+      color: var(--text-main);
+    }
+
+    .menu-body {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .fish-gacha-btn {
+      width: 100%;
+      padding: 13px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border-card-center);
+      background: linear-gradient(135deg, var(--btn-active-bg), var(--tag-bg));
+      box-shadow: 0 0 18px var(--accent-glow);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      text-align: left;
+      transition: transform 0.22s ease, border-color 0.22s ease;
+    }
+
+    .fish-gacha-btn:hover {
+      border-color: var(--text-main);
+      transform: translate3d(0, -1px, 0);
+    }
+
+    .fish-gacha-btn:active { transform: scale(0.98); }
+
+    .fish-gacha-main {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .fish-gacha-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-main);
+    }
+
+    .fish-gacha-sub {
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--text-soft);
+    }
+
+    .menu-action-row {
+      width: 100%;
+      padding: 11px 13px;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      background-color: var(--tag-bg);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12.5px;
+      color: var(--text-main);
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .menu-action-row:hover,
+    .menu-action-row.is-active {
+      border-color: var(--accent);
+      background-color: var(--btn-active-bg);
+    }
+
+    .menu-badge {
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border-card);
+      font-size: 11px;
+      color: var(--accent);
+    }
+
+    .menu-section-label {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .recent-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .recent-item {
+      width: 100%;
+      padding: 8px 11px;
+      border-radius: 9px;
+      border: 1px solid var(--border-subtle);
+      background-color: var(--tag-bg);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      text-align: left;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .recent-item:hover {
+      border-color: var(--border-card-center);
+      background-color: var(--btn-active-bg);
+    }
+
+    .recent-name { font-size: 12.5px; color: var(--text-main); }
+    .recent-date { font-size: 10.5px; color: var(--text-muted); flex-shrink: 0; }
+
+    .guide-accordion {
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      background-color: var(--tag-bg);
+      overflow: hidden;
+    }
+
+    .guide-trigger {
+      width: 100%;
+      padding: 11px 13px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12.5px;
+      color: var(--text-main);
+    }
+
+    .guide-chevron {
+      font-size: 10px;
+      color: var(--accent);
+      transition: transform 0.22s ease;
+    }
+
+    .guide-accordion.is-open .guide-chevron { transform: rotate(180deg); }
+
+    .guide-content {
+      display: none;
+      padding: 0 13px 12px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .guide-accordion.is-open .guide-content { display: block; }
+
+    .guide-steps {
+      margin-top: 10px;
+      padding-left: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 11.5px;
+      font-weight: 300;
+      line-height: 1.55;
+      color: var(--text-soft);
+    }
+
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 7px;
+    }
+
+    .social-link {
+      padding: 9px 11px;
+      border-radius: 9px;
+      border: 1px solid var(--border-subtle);
+      background-color: var(--tag-bg);
+      font-size: 12px;
+      color: var(--text-soft);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .social-link:hover {
+      border-color: var(--border-card-center);
+      color: var(--text-main);
+      background-color: var(--btn-active-bg);
+    }
+
+    .social-link.is-wide { grid-column: 1 / -1; }
+    .social-arrow { font-size: 11px; color: var(--accent); }
+
+    .menu-foot {
+      padding: 12px 18px 14px;
+      border-top: 1px solid var(--border-subtle);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .page-hook-btn {
+      padding: 8px 10px;
+      border-radius: 9px;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-soft);
+      font-size: 11px;
+      text-align: center;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .page-hook-btn:hover {
+      border-color: var(--border-card-center);
+      color: var(--text-main);
+    }
+
+    /* =========================================================================
+       8. SÂN KHẤU QUẠT TRẢI BÀI (KÉO XÍCH LÊN CAO, <= 7 LÁ TRONG VÙNG NHÌN)
+       ========================================================================= */
+    .stage-wrap {
+      flex: 1;
+      position: relative;
+      width: 100%;
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      user-select: none;
+      touch-action: pan-y;
+    }
+
+    .fan-track {
+      position: relative;
+      z-index: 12;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: grab;
+    }
+
+    .fan-track.is-dragging { cursor: grabbing; }
+
+    /* Hai nút điều hướng ‹ › mảnh hai bên */
+    .side-nav-btn {
+      position: absolute;
+      top: 46%;
+      z-index: 65;
+      width: 36px;
+      height: 36px;
+      margin-top: -18px;
+      border-radius: 50%;
+      background-color: var(--glass-bg);
+      border: 1px solid var(--border-card);
+      color: var(--text-soft);
+      font-size: 19px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.22s ease, color 0.22s ease, transform 0.2s ease, opacity 0.22s ease;
+    }
+
+    .side-nav-btn:hover { border-color: var(--accent); color: var(--text-main); }
+    .side-nav-btn:active { transform: scale(0.9); }
+    .side-nav-prev { left: max(14px, env(safe-area-inset-left)); }
+    .side-nav-next { right: max(14px, env(safe-area-inset-right)); }
+
+    /* Khung định vị lá bài kéo cao (top: 45%) để khít nhịp với dòng tạp chí trên */
+    .card-slot {
+      position: absolute;
+      left: 50%;
+      top: 45.5%;
+      width: 274px;
+      height: 438px;
+      margin-left: -137px;
+      margin-top: -219px;
+      perspective: 1300px;
+      will-change: transform, opacity;
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* Trục lật 3D 2 mặt */
+    .card-flipper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+      transition: transform 0.78s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
+    }
+
+    /* Nhịp lật mặt chậm rãi 950ms dành riêng cho khoảnh khắc lật bài Câu cá */
+    .card-flipper.is-cinematic-reveal {
+      transition: transform 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .card-flipper.is-flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      overflow: hidden;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border: 1px solid var(--border-card);
+      transition: border-color 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .card-slot.is-center .card-front {
+      border-color: var(--border-card-center);
+      box-shadow: var(--center-shadow);
+    }
+
+    .card-double-rim {
+      position: absolute;
+      inset: 5px;
+      border-radius: 11px;
+      border: 1px solid var(--border-inner);
+      pointer-events: none;
+      z-index: 8;
+    }
+
+    /* Mặt trước lá bài */
+    .card-front {
+      background: linear-gradient(178deg, var(--card-top) 0%, var(--card-bottom) 100%);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Nút thả tim góc trên phải */
+    .card-heart-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 15;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: var(--glass-bg);
+      border: 1px solid var(--border-card);
+      color: var(--text-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s ease, color 0.2s ease, transform 0.24s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .card-heart-btn:hover { border-color: var(--accent); color: var(--text-main); }
+    .card-heart-btn.is-saved { border-color: var(--accent); color: var(--accent); }
+    .card-heart-btn.is-saved svg path { fill: currentColor; stroke: currentColor; }
+    .card-heart-btn.is-bouncing { transform: scale(1.22); }
+
+    /* Cửa sổ ảnh dáng Vòm Tàu Ngầm */
+    .arch-frame {
+      position: relative;
+      flex: 1;
+      min-height: 162px;
+      margin: 14px 14px 0;
+      border-radius: 132px 132px 0 0;
+      overflow: hidden;
+      border: 1px solid var(--border-card);
+      border-bottom: none;
+      background-color: var(--bg-deep);
+    }
+
+    .card-slot.tier-shallow .arch-frame { border-color: var(--pearl-rim); }
+    .card-slot.tier-twilight .arch-frame { border-color: var(--border-card-center); }
+
+    .arch-visual { position: absolute; inset: 0; }
+    .arch-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* Nhiễu hạt film 35mm thuần CSS siêu nhẹ (không dùng base64) */
+    .film-grain {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0.14;
+      background-image:
+        radial-gradient(rgba(255, 255, 255, 0.28) 0.5px, transparent 0.5px),
+        radial-gradient(rgba(0, 0, 0, 0.36) 0.5px, transparent 0.5px);
+      background-size: 4px 4px, 5px 5px;
+      background-position: 0 0, 2px 2px;
+    }
+
+    .arch-fade {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      background: linear-gradient(180deg, transparent 52%, rgba(4, 10, 18, 0.44) 80%, var(--card-bottom) 100%);
+    }
+
+    .art-canvas {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(174deg, var(--art-a) 0%, var(--art-b) 66%, var(--card-bottom) 100%);
+      overflow: hidden;
+    }
+
+    .art-halo {
+      position: absolute;
+      left: 50%;
+      top: 40%;
+      width: 78%;
+      aspect-ratio: 1 / 1;
+      transform: translate3d(-50%, -50%, 0);
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--art-glow) 0%, transparent 70%);
+    }
+
+    .art-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Đường mực nước 1px có hình thoi kim cương 1px ở giữa */
+    .waterline {
+      position: relative;
+      z-index: 6;
+      height: 1px;
+      margin: 0 14px;
+      background: linear-gradient(90deg, transparent 0%, var(--border-card) 16%, var(--border-card-center) 50%, var(--border-card) 84%, transparent 100%);
+      flex-shrink: 0;
+    }
+
+    .waterline::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 6px;
+      height: 6px;
+      background-color: var(--card-bottom);
+      border: 1px solid var(--accent);
+      transform: translate3d(-50%, -50%, 0) rotate(45deg);
+    }
+
+    .card-info {
+      position: relative;
+      z-index: 6;
+      padding: 13px 14px 9px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      flex-shrink: 0;
+    }
+
+    .card-name {
+      font-size: 1.54rem;
+      font-weight: 500;
+      font-style: italic;
+      line-height: 1.1;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      min-height: 22px;
+    }
+
+    .archive-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 2.5px 7px;
+      border-radius: 4px;
+      border: 1px solid var(--tag-border);
+      background-color: var(--tag-bg);
+      font-size: 9.5px;
+      font-weight: 300;
+      color: var(--text-soft);
+      line-height: 1.25;
+      white-space: nowrap;
+    }
+
+    .card-foot {
+      position: relative;
+      z-index: 6;
+      margin: 0 14px;
+      padding: 8px 0 11px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-shrink: 0;
+      font-size: 10px;
+    }
+
+    .card-date { color: var(--text-muted); }
+
+    .card-depth-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--text-soft);
+    }
+
+    .tier-glyph { color: var(--accent); letter-spacing: 0.1em; }
+
+    /* Vệt ánh xà cừ lướt ngang mặt thẻ (Vùng chạng vạng & lúc lật bài Câu cá chậm rãi) */
+    .card-sheen {
+      position: absolute;
+      inset: -38%;
+      z-index: 7;
+      pointer-events: none;
+      opacity: 0;
+      background: linear-gradient(
+        118deg,
+        transparent 36%,
+        var(--sheen-color) 49%,
+        rgba(255, 255, 255, 0.08) 57%,
+        transparent 68%
+      );
+      transform: translate3d(-78%, 0, 0);
+      will-change: transform, opacity;
+    }
+
+    .card-slot.tier-twilight.is-center .card-sheen {
+      animation: sheenSweep 1.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .card-slot.is-sheen-burst .card-sheen {
+      animation: sheenSweepSlow 1.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes sheenSweep {
+      0% { opacity: 0; transform: translate3d(-74%, 0, 0); }
+      28% { opacity: 0.92; }
+      100% { opacity: 0; transform: translate3d(74%, 0, 0); }
+    }
+
+    @keyframes sheenSweepSlow {
+      0% { opacity: 0; transform: translate3d(-80%, 0, 0); }
+      24% { opacity: 1; }
+      72% { opacity: 0.72; }
+      100% { opacity: 0; transform: translate3d(80%, 0, 0); }
+    }
+
+    .abyss-crack {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 82px;
+      height: 82px;
+      z-index: 7;
+      pointer-events: none;
+      opacity: 0.72;
+    }
+
+    /* Mặt lưng lá bài tối giản phong cách tạp chí */
+    .card-back {
+      transform: rotateY(180deg);
+      background: linear-gradient(168deg, var(--card-back-top) 0%, var(--card-back-bottom) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 18px;
+      text-align: center;
+    }
+
+    .back-caption {
+      font-size: 8.5px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0.82;
+    }
+
+    .back-emblem {
+      width: 66%;
+      max-width: 172px;
+      color: var(--accent);
+      opacity: 0.86;
+    }
+
+    /* Dòng thì thầm trạng thái trong 5 nhịp Câu cá & lời mở khóa khi lật */
+    .gacha-whisper {
+      position: absolute;
+      left: 50%;
+      bottom: max(18px, env(safe-area-inset-bottom));
+      z-index: 98;
+      max-width: calc(100vw - 96px);
+      padding: 7px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border-card);
+      background-color: var(--glass-bg);
+      color: var(--text-main);
+      font-size: 12px;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate3d(-50%, 10px, 0);
+      transition: opacity 0.4s ease, transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .gacha-whisper.is-shown {
+      opacity: 1;
+      transform: translate3d(-50%, 0, 0);
+    }
+
+    .gacha-whisper.is-clickable {
+      pointer-events: auto;
+      cursor: pointer;
+      border-color: var(--border-card-center);
+    }
+
+    .gacha-whisper-accent {
+      color: var(--accent);
+      margin-right: 4px;
+    }
+
+    /* Trạng thái rỗng */
+    .empty-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 24px;
+      text-align: center;
+      z-index: 25;
+    }
+
+    .empty-state.is-visible { display: flex; }
+
+    .empty-msg {
+      font-size: 1.26rem;
+      font-style: italic;
+      color: var(--text-soft);
+      max-width: 300px;
+      line-height: 1.45;
+    }
+
+    .reset-btn {
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border-card-center);
+      background-color: var(--btn-active-bg);
+      color: var(--text-main);
+      font-size: 11.5px;
+    }
+
+    /* =========================================================================
+       9. KHUNG HỒ SƠ CHI TIẾT (EDITORIAL DOSSIER — 2 TAB + STICKY FOOTER)
+       ========================================================================= */
+    .dossier-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background-color: var(--scrim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.28s ease, visibility 0.28s ease;
+    }
+
+    .dossier-overlay.is-open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .dossier-dialog {
+      position: relative;
+      width: min(640px, 100%);
+      height: min(86dvh, 660px);
+      border-radius: 18px;
+      background-color: var(--glass-panel-bg);
+      border: 1px solid var(--border-card);
+      box-shadow: inset 0 1px 0 var(--glass-highlight), 0 24px 52px rgba(0, 0, 0, 0.68);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      opacity: 0;
+      transform: scale(0.94);
+      will-change: transform, opacity;
+      transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.28s ease;
+    }
+
+    .dossier-overlay.is-open .dossier-dialog {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .dossier-header {
+      position: relative;
+      padding: 18px 20px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      flex-shrink: 0;
+    }
+
+    .dossier-mini-arch {
+      position: relative;
+      width: 78px;
+      height: 106px;
+      flex-shrink: 0;
+      border-radius: 46px 46px 8px 8px;
+      overflow: hidden;
+      border: 1px solid var(--border-card);
+      background-color: var(--bg-deep);
+    }
+
+    .dossier-head-meta {
+      flex: 1;
+      min-width: 0;
+      padding-right: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .dossier-name {
+      font-size: clamp(1.64rem, 3.2vw, 2.08rem);
+      font-weight: 500;
+      font-style: italic;
+      line-height: 1.08;
+      color: var(--text-main);
+    }
+
+    .dossier-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+
+    .dossier-metrics {
+      font-size: 11.5px;
+      color: var(--text-soft);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .metric-accent { color: var(--accent); }
+
+    .dossier-tokens-note {
+      font-size: 10px;
+      font-weight: 300;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    .dossier-close-btn {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-soft);
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .dossier-close-btn:hover { border-color: var(--border-card-center); color: var(--text-main); }
+
+    .dossier-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--border-subtle);
+      flex-shrink: 0;
+    }
+
+    .dossier-tab-btn {
+      position: relative;
+      padding: 11px 12px;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .dossier-tab-btn:hover { color: var(--text-soft); }
+    .dossier-tab-btn.is-active { color: var(--text-main); background-color: var(--tag-bg); }
+
+    .dossier-tab-btn.is-active::after {
+      content: "";
+      position: absolute;
+      left: 20%;
+      right: 20%;
+      bottom: 0;
+      height: 1.5px;
+      background-color: var(--accent);
+    }
+
+    .tab-count { font-size: 10.5px; color: var(--accent); }
+
+    .dossier-body {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 18px 20px 20px;
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.is-active { display: block; }
+
+    .bio-content {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      font-size: 13.5px;
+      font-weight: 300;
+      line-height: 1.84;
+      color: var(--text-soft);
+    }
+
+    .bio-content p:first-child::first-letter {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 1.9em;
+      line-height: 1;
+      color: var(--accent);
+      padding-right: 2px;
+    }
+
+    .feedback-form {
+      padding: 13px;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      background-color: var(--tag-bg);
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      margin-bottom: 16px;
+    }
+
+    .fb-input,
+    .fb-textarea {
+      width: 100%;
+      padding: 8px 11px;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+      background-color: rgba(0, 0, 0, 0.22);
+      color: var(--text-main);
+      font-size: 12.5px;
+      font-weight: 300;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .fb-input:focus,
+    .fb-textarea:focus { border-color: var(--border-card-center); }
+    .fb-input::placeholder,
+    .fb-textarea::placeholder { color: var(--text-dim); }
+    .fb-textarea { min-height: 76px; resize: vertical; line-height: 1.55; }
+
+    .fb-form-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .fb-char-count { font-size: 10.5px; color: var(--text-muted); }
+
+    .fb-submit-btn {
+      padding: 7px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border-card-center);
+      background-color: var(--btn-active-bg);
+      color: var(--text-main);
+      font-size: 12px;
+      transition: border-color 0.2s ease, opacity 0.2s ease;
+    }
+
+    .fb-submit-btn:hover { border-color: var(--text-main); }
+    .fb-submit-btn:disabled { opacity: 0.48; pointer-events: none; }
+
+    .feedback-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .fb-card {
+      padding: 12px 13px;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      background-color: var(--tag-bg);
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .fb-card-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .fb-author { font-size: 12px; font-weight: 500; color: var(--accent); }
+    .fb-time { font-size: 10px; color: var(--text-dim); flex-shrink: 0; }
+
+    .fb-text {
+      font-size: 12.6px;
+      font-weight: 300;
+      line-height: 1.62;
+      color: var(--text-soft);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .fb-empty {
+      text-align: center;
+      padding: 18px 10px;
+      font-size: 12.5px;
+      font-style: italic;
+      color: var(--text-muted);
+    }
+
+    .dossier-footer {
+      padding: 12px 18px;
+      border-top: 1px solid var(--border-subtle);
+      background-color: var(--glass-elevated);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .footer-heart-btn {
+      height: 40px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border-card);
+      background-color: var(--tag-bg);
+      color: var(--text-soft);
+      font-size: 12.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+      transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .footer-heart-btn:hover { border-color: var(--accent); color: var(--text-main); }
+
+    .footer-heart-btn.is-saved {
+      border-color: var(--accent);
+      background-color: var(--btn-active-bg);
+      color: var(--accent);
+    }
+
+    .footer-heart-btn.is-saved svg path { fill: currentColor; stroke: currentColor; }
+
+    .footer-chat-btn {
+      flex: 1;
+      height: 40px;
+      padding: 0 18px;
+      border-radius: 999px;
+      border: 1px solid var(--border-card-center);
+      background: linear-gradient(135deg, var(--btn-active-bg), rgba(255, 255, 255, 0.04));
+      box-shadow: 0 0 18px var(--accent-glow);
+      color: var(--text-main);
+      font-size: 13px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .footer-chat-btn:hover {
+      border-color: var(--text-main);
+      transform: translate3d(0, -1px, 0);
+    }
+
+    /* Toast dịu mắt thay thế hoàn toàn alert() */
+    .toast-note {
+      position: fixed;
+      left: 50%;
+      bottom: 64px;
+      z-index: 420;
+      max-width: calc(100vw - 32px);
+      padding: 9px 16px;
+      border-radius: 999px;
+      background-color: var(--glass-panel-bg);
+      border: 1px solid var(--border-card);
+      color: var(--text-main);
+      font-size: 11.5px;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate3d(-50%, 8px, 0);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .toast-note.is-shown {
+      opacity: 1;
+      transform: translate3d(-50%, 0, 0);
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border-card); border-radius: 99px; }
+
+    /* =========================================================================
+       10. RESPONSIVE ĐIỆN THOẠI DỌC (360px - 768px)
+       ========================================================================= */
+    @media (max-width: 768px) {
+      .topbar-outer { padding: 8px 10px 0; gap: 6px; }
+
+      .glass-bar {
+        height: 44px;
+        padding: 0 6px;
+        gap: 5px;
+        border-radius: 13px;
+      }
+
+      .bar-divider { display: none; }
+      .bar-search { padding: 0 7px; height: 30px; gap: 4px; }
+      .bar-search input { font-size: 11.5px; }
+
+      .dir-btn {
+        height: 30px;
+        padding: 0 8px;
+        font-size: 11px;
+        max-width: 96px;
+      }
+
+      .fish-disc-btn { width: 26px; height: 26px; }
+      .fish-disc-spinner { width: 22px; height: 22px; }
+      .music-toggle-btn { width: 22px; height: 22px; }
+      .menu-btn { width: 30px; height: 30px; }
+
+      .editorial-subbar {
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        padding: 1px 4px 7px;
+      }
+
+      .subbar-left {
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .brand-whisper { font-size: 0.98rem; }
+
+      .subbar-quote-wrap {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .rotating-quote {
+        text-align: center;
+        font-size: 0.88rem;
+        line-height: 1.3;
+        min-height: 2.4em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .popover-panel { top: calc(58px + env(safe-area-inset-top)); }
+      .playlist-popover { right: 10px; }
+
+      .shell-backdrop {
+        width: 108vw;
+        top: 46%;
+        transform: translate3d(-50%, -46%, 0);
+      }
+
+      .card-slot {
+        top: 46%;
+        width: clamp(224px, 65vw, 250px);
+        height: clamp(354px, 56dvh, 404px);
+        margin-left: calc(clamp(224px, 65vw, 250px) / -2);
+        margin-top: calc(clamp(354px, 56dvh, 404px) / -2);
+      }
+
+      .arch-frame { margin: 12px 12px 0; min-height: 140px; }
+      .waterline { margin: 0 12px; }
+      .card-info { padding: 11px 12px 8px; gap: 6px; }
+      .card-name { font-size: 1.38rem; }
+      .card-foot { margin: 0 12px; padding: 7px 0 10px; }
+      .card-heart-btn { top: 10px; right: 10px; width: 28px; height: 28px; }
+
+      .side-nav-btn {
+        width: 30px;
+        height: 30px;
+        margin-top: -15px;
+        font-size: 17px;
+      }
+      .side-nav-prev { left: 8px; }
+      .side-nav-next { right: 8px; }
+
+      .gacha-whisper {
+        max-width: calc(100vw - 28px);
+        bottom: max(54px, calc(env(safe-area-inset-bottom) + 46px));
+        font-size: 11px;
+        white-space: normal;
+        line-height: 1.38;
+      }
+
+      .dossier-overlay { padding: 10px; }
+      .dossier-dialog { height: min(90dvh, 680px); border-radius: 16px; }
+      .dossier-header { padding: 14px 14px 12px; gap: 12px; }
+      .dossier-mini-arch { width: 66px; height: 90px; }
+      .dossier-body { padding: 14px 15px 16px; }
+      .dossier-footer { padding: 10px 14px; }
+      .footer-chat-btn { font-size: 12px; padding: 0 12px; }
+
+      .theme-orbs { right: 14px; bottom: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== 1. HẬU CẢNH ĐẠI DƯƠNG SIÊU NHẸ ==================== -->
+  <div class="ocean-bg" aria-hidden="true"></div>
+  <div class="god-rays" aria-hidden="true">
+    <div class="god-ray god-ray-1"></div>
+    <div class="god-ray god-ray-2"></div>
+  </div>
+  <div class="depth-veil" aria-hidden="true"></div>
+
+  <!-- Hai vòng sóng 1px đồng tâm bung tỏa khi đổi màu & lật bài Câu cá -->
+  <div id="wave-ring-1" class="wave-ring" aria-hidden="true"></div>
+  <div id="wave-ring-2" class="wave-ring" aria-hidden="true"></div>
+
+  <!-- 2 viên ngọc đổi màu góc dưới phải (KHÔNG CHỮ, NGOÀI MỌI KHUNG KÍNH) -->
+  <div class="theme-orbs" role="group" aria-label="Chọn chế độ màu đại dương">
+    <button type="button" class="orb-btn orb-blue is-active" data-theme-target="blue-sea" aria-label="Biển Xanh"></button>
+    <button type="button" class="orb-btn orb-red" data-theme-target="red-sea" aria-label="Red Sea"></button>
+  </div>
+
+  <!-- ==================== 2. KHUNG CHÍNH TRANG 3 ==================== -->
+  <div class="page-shell">
+
+    <!-- Thanh kính chung trên cùng + Dòng thông số tạp chí 2 đầu -->
+    <header class="topbar-outer">
+      <div class="glass-bar">
+        <!-- Cụm 1: Tìm kiếm -->
+        <div class="bar-search">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m20 20-3.5-3.5" stroke-linecap="round"></path>
+          </svg>
+          <input id="search-input" type="search" placeholder="Tìm tên, tag..." aria-label="Tìm nhân vật hoặc thẻ" />
+          <button id="search-clear" type="button" class="search-clear-btn" aria-label="Xóa từ khóa">✕</button>
+        </div>
+
+        <span class="bar-divider" aria-hidden="true"></span>
+
+        <!-- Cụm 2: Mục lục ▾ (25 tag chia 3 nhóm) -->
+        <button id="dir-btn" type="button" class="dir-btn" aria-expanded="false" aria-controls="dir-popover">
+          <span id="dir-btn-label" class="dir-btn-label">Mục lục</span>
+          <span class="dir-caret" aria-hidden="true">▾</span>
+        </button>
+
+        <span class="bar-divider" aria-hidden="true"></span>
+
+        <!-- Cụm 3: Đĩa nhạc con cá xoay tròn + nút dừng/phát -->
+        <div class="music-cluster">
+          <button id="fish-disc-btn" type="button" class="fish-disc-btn" title="Chọn bài hát khác" aria-label="Mở danh sách nhạc" aria-expanded="false" aria-controls="playlist-popover">
+            <span class="fish-disc-spinner" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="16" cy="16" r="13.5" stroke-opacity="0.34" stroke-dasharray="3 4" />
+                <path d="M9.5 16c2.6-4.2 8.2-4.6 12.6-1.2 1.2 1 1.2 1.4 0 2.4-4.4 3.4-10 3-12.6-1.2Z" />
+                <path d="M9.5 16 5.8 12.8m3.7 3.2-3.7 3.2" />
+                <circle cx="18.8" cy="15.2" r="0.9" fill="currentColor" stroke="none" />
+              </svg>
+            </span>
+          </button>
+          <button id="music-toggle-btn" type="button" class="music-toggle-btn" aria-label="Phát hoặc dừng nhạc">▶</button>
+        </div>
+
+        <!-- Cụm 4: Nút ☰ mở Khung Kính thứ 2 -->
+        <button id="menu-btn" type="button" class="menu-btn" aria-label="Mở bảng menu" aria-expanded="false" aria-controls="menu-overlay">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <line x1="4" y1="7" x2="20" y2="7"></line>
+            <line x1="4" y1="12" x2="20" y2="12"></line>
+            <line x1="4" y1="17" x2="20" y2="17"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Dòng thông số tạp chí cân 2 đầu: Trái (Tên + Chỉ số thẻ) · Phải (6 câu trích dẫn xoay 10s/lần) -->
+      <div class="editorial-subbar">
+        <div class="subbar-left">
+          <span class="brand-whisper font-serif">Ariel không biết bơi</span>
+          <span id="live-card-status" class="live-card-status tabular">
+            <strong>01</strong> / 10 · -1.420m
+          </span>
+          <span id="active-filter-pill" class="active-filter-pill">
+            <span id="active-filter-text"></span>
+            <button id="clear-filter-pill" type="button" aria-label="Bỏ lọc">✕</button>
+          </span>
+        </div>
+
+        <div class="subbar-quote-wrap">
+          <p id="rotating-quote" class="rotating-quote font-serif" aria-live="polite"></p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Popover Bảng Mục Lục 25 Tag -->
+    <section id="dir-popover" class="popover-panel directory-popover" aria-label="Mục lục 25 thể loại">
+      <div class="dir-header">
+        <span class="dir-title">Mục lục đáy biển · 25 thẻ</span>
+        <button id="dir-all-btn" type="button" class="dir-all-btn is-active">Tất cả</button>
+      </div>
+      <div id="tag-groups-grid" class="tag-groups-grid"></div>
+    </section>
+
+    <!-- Popover Danh Sách Nhạc -->
+    <section id="playlist-popover" class="popover-panel playlist-popover" aria-label="Danh sách bài hát">
+      <div class="playlist-head">
+        <span class="playlist-head-title">Đĩa nhạc đáy biển</span>
+        <span id="playlist-state" class="playlist-state">Đang dừng</span>
+      </div>
+      <div id="playlist-items" class="playlist-items"></div>
+    </section>
+
+    <!-- Sân khấu Quạt Trải Bài + Nền Vỏ Sò Kiến Trúc & Hải Đồ 1px Cỡ Lớn -->
+    <main class="stage-wrap">
+
+      <!-- Hậu cảnh Vỏ Sò + Vòng Cung Hải Đồ kiến trúc nét mảnh 1px (1 SVG duy nhất) -->
+      <div class="shell-backdrop" aria-hidden="true">
+        <svg viewBox="0 0 840 660" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Nhóm vòng cung tọa độ hải đồ xoay khớp nhẹ theo nhịp vuốt bài -->
+          <g id="nautical-ring">
+            <circle cx="420" cy="520" r="446" stroke="currentColor" stroke-width="0.75" stroke-opacity="0.16" />
+            <circle cx="420" cy="520" r="416" stroke="currentColor" stroke-width="0.65" stroke-dasharray="2 10" stroke-opacity="0.20" />
+            <circle cx="420" cy="520" r="356" stroke="currentColor" stroke-width="0.55" stroke-opacity="0.12" />
+            <g id="nautical-ticks" stroke="currentColor" stroke-width="0.7"></g>
+            <!-- Dấu kim cương tọa độ la bàn -->
+            <path d="M420 68 L424.5 74 L420 80 L415.5 74 Z" stroke="currentColor" stroke-width="0.85" stroke-opacity="0.28" />
+            <path d="M866 520 L860 524.5 L854 520 L860 515.5 Z" stroke="currentColor" stroke-width="0.85" stroke-opacity="0.22" />
+            <path d="M-26 520 L-20 524.5 L-14 520 L-20 515.5 Z" stroke="currentColor" stroke-width="0.85" stroke-opacity="0.22" />
+          </g>
+
+          <!-- Vỏ sò kiến trúc tạp chí cỡ lớn tỏa ra từ bản lề dưới đáy (420, 520) -->
+          <g id="architectural-shell">
+            <!-- Viền lượn sóng ngoài cùng của vỏ sò (9 múi thanh mảnh, ôm vượt đỉnh lá bài) -->
+            <path
+              d="M366 520
+                 L112 372
+                 C96 336, 114 298, 152 288
+                 C146 248, 174 206, 218 198
+                 C220 156, 258 124, 304 128
+                 C318 92, 360 72, 396 88
+                 C406 70, 434 70, 444 88
+                 C480 72, 522 92, 536 128
+                 C582 124, 620 156, 622 198
+                 C666 206, 694 248, 688 288
+                 C726 298, 744 336, 728 372
+                 L474 520"
+              stroke="currentColor"
+              stroke-width="1.15"
+              stroke-opacity="0.23"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+
+            <!-- Đường viền phụ mảnh song song bên trong mép sò -->
+            <path
+              d="M126 364
+                 C115 335, 130 304, 164 296
+                 C160 258, 185 220, 226 213
+                 C230 174, 265 144, 308 148
+                 C322 115, 360 96, 396 110
+                 C407 95, 433 95, 444 110
+                 C480 96, 518 115, 532 148
+                 C575 144, 610 174, 614 213
+                 C655 220, 680 258, 676 296
+                 C710 304, 725 335, 714 364"
+              stroke="currentColor"
+              stroke-width="0.65"
+              stroke-opacity="0.14"
+              stroke-dasharray="3 5"
+            />
+
+            <!-- Các nan gân vỏ sò 1px tỏa mềm mại từ tâm bản lề -->
+            <g stroke="currentColor" stroke-width="0.85" stroke-opacity="0.18" stroke-linecap="round">
+              <path d="M402 512 Q272 414 152 288" />
+              <path d="M408 508 Q304 374 218 198" />
+              <path d="M414 505 Q350 326 304 128" />
+              <path d="M418 504 Q398 296 396 88" />
+              <path d="M420 504 L420 74" stroke-opacity="0.22" />
+              <path d="M422 504 Q442 296 444 88" />
+              <path d="M426 505 Q490 326 536 128" />
+              <path d="M432 508 Q536 374 622 198" />
+              <path d="M438 512 Q568 414 688 288" />
+            </g>
+
+            <!-- Đường vân sinh trưởng đồng tâm thanh thoát bên trong vỏ sò -->
+            <g stroke="currentColor" stroke-width="0.7" stroke-opacity="0.13" fill="none">
+              <path d="M188 386 A268 268 0 0 1 652 386" />
+              <path d="M242 422 A204 204 0 0 1 598 422" stroke-dasharray="4 7" />
+              <path d="M302 460 A134 134 0 0 1 538 460" />
+            </g>
+
+            <!-- Bản lề & hai tai vỏ sò kiểu ấn chương kiến trúc ở đáy -->
+            <path d="M366 520 L330 554 L394 560 L420 578 L446 560 L510 554 L474 520 Z" stroke="currentColor" stroke-width="0.95" stroke-opacity="0.22" />
+            <circle cx="420" cy="522" r="24" stroke="currentColor" stroke-width="0.8" stroke-opacity="0.20" />
+            <path d="M420 506 L427 522 L420 538 L413 522 Z" stroke="currentColor" stroke-width="0.9" stroke-opacity="0.28" />
+            <!-- Đỉnh ngọc trai kim cương phía trên cùng trục vỏ sò -->
+            <path d="M420 44 L425 52 L420 60 L415 52 Z" stroke="currentColor" stroke-width="0.9" stroke-opacity="0.26" />
+          </g>
+        </svg>
+      </div>
+
+      <!-- Vòng hào quang 1px phát nhịp trong nhịp rút bài Câu cá -->
+      <div id="gacha-halo" class="gacha-halo" aria-hidden="true"></div>
+
+      <button id="prev-btn" type="button" class="side-nav-btn side-nav-prev" aria-label="Lá bài trước">‹</button>
+      <div id="fan-track" class="fan-track" aria-label="Quạt trải bài nhân vật"></div>
+      <button id="next-btn" type="button" class="side-nav-btn side-nav-next" aria-label="Lá bài tiếp theo">›</button>
+
+      <!-- Dòng thì thầm trạng thái trong 5 nhịp Câu cá -->
+      <div id="gacha-whisper" class="gacha-whisper" role="status" aria-live="polite"></div>
+
+      <div id="empty-state" class="empty-state">
+        <p id="empty-msg" class="empty-msg font-serif">Vùng nước này chưa có nhân vật nào phù hợp.</p>
+        <button id="reset-filter-btn" type="button" class="reset-btn">Trải lại toàn bộ bộ bài</button>
+      </div>
+    </main>
+  </div>
+
+  <!-- ==================== 3. KHUNG KÍNH THỨ 2 (MENU OVERLAY ☰) ==================== -->
+  <div id="menu-overlay" class="menu-overlay" role="dialog" aria-modal="true" aria-label="Menu tiện ích">
+    <aside class="menu-drawer">
+      <div class="menu-head">
+        <h2 class="menu-head-title font-serif">La bàn của Ariel</h2>
+        <button id="menu-close-btn" type="button" class="menu-close-btn" aria-label="Đóng menu">✕</button>
+      </div>
+
+      <div class="menu-body">
+        <!-- Nút nổi bật Câu cá (Random Gacha 5 nhịp chậm rãi) -->
+        <button id="menu-gacha-btn" type="button" class="fish-gacha-btn">
+          <span class="fish-gacha-main">
+            <span class="fish-gacha-title">✦ Câu cá</span>
+            <span class="fish-gacha-sub">Úp bài, xào xấp chậm rãi &amp; vớt lên một linh hồn</span>
+          </span>
+          <span style="color: var(--accent); font-size: 15px;" aria-hidden="true">→</span>
+        </button>
+
+        <!-- Lưới cá đã lưu (♥) -->
+        <button id="menu-saved-btn" type="button" class="menu-action-row">
+          <span>Lưới cá đã lưu (♥)</span>
+          <span id="menu-saved-count" class="menu-badge tabular">0</span>
+        </button>
+
+        <!-- Cá mới thả (3 nhân vật mới nhất) -->
+        <div>
+          <p class="menu-section-label">Cá mới thả</p>
+          <div id="recent-list" class="recent-list"></div>
+        </div>
+
+        <!-- Hướng dẫn lặn AI Studio (3 bước gọn) -->
+        <div id="guide-accordion" class="guide-accordion">
+          <button id="guide-trigger" type="button" class="guide-trigger" aria-expanded="false">
+            <span>Hướng dẫn lặn AI Studio</span>
+            <span class="guide-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div class="guide-content">
+            <ol class="guide-steps">
+              <li>Bấm <strong>Trò chuyện cùng nhân vật</strong> trong khung hồ sơ để mở link Google AI Studio.</li>
+              <li>Đăng nhập bằng tài khoản Google miễn phí và chọn đúng <strong>Model khuyên dùng</strong> ở cột bên phải.</li>
+              <li>Gõ lời mở đầu của bạn ở khung dưới cùng để bắt đầu nhập vai dưới đáy biển.</li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- Cụm liên kết ngoài & NGL -->
+        <div>
+          <p class="menu-section-label">Liên kết &amp; Hòm thư ẩn danh</p>
+          <div id="social-grid" class="social-grid"></div>
+        </div>
+      </div>
+
+      <!-- Móc nối ghép Trang 1 & Trang 2 -->
+      <div class="menu-foot">
+        <button id="go-page-1-btn" type="button" class="page-hook-btn">Về mặt nước (Trang 1)</button>
+        <button id="go-page-2-btn" type="button" class="page-hook-btn">Tập bơi lại (Trang 2)</button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ==================== 4. KHUNG HỒ SƠ CHI TIẾT (EDITORIAL DOSSIER) ==================== -->
+  <div id="dossier-overlay" class="dossier-overlay" role="dialog" aria-modal="true" aria-labelledby="d-name">
+    <article class="dossier-dialog">
+      <header class="dossier-header">
+        <div class="dossier-mini-arch">
+          <div id="d-visual" class="arch-visual"></div>
+          <div class="film-grain" aria-hidden="true"></div>
+          <div class="arch-fade" aria-hidden="true"></div>
+        </div>
+
+        <div class="dossier-head-meta">
+          <h2 id="d-name" class="dossier-name font-serif"></h2>
+          <div id="d-tags" class="dossier-tags"></div>
+          <div id="d-metrics" class="dossier-metrics tabular"></div>
+          <p id="d-tokens-note" class="dossier-tokens-note"></p>
+        </div>
+
+        <button id="d-close-btn" type="button" class="dossier-close-btn" aria-label="Đóng hồ sơ">✕</button>
+      </header>
+
+      <div class="dossier-tabs" role="tablist">
+        <button id="tab-bio-btn" type="button" class="dossier-tab-btn is-active" role="tab" aria-selected="true" data-tab="bio">
+          Giới thiệu
+        </button>
+        <button id="tab-fb-btn" type="button" class="dossier-tab-btn" role="tab" aria-selected="false" data-tab="feedback">
+          <span>Hồi âm</span>
+          <span id="d-fb-count" class="tab-count tabular">(0)</span>
+        </button>
+      </div>
+
+      <div id="dossier-body" class="dossier-body">
+        <section id="panel-bio" class="tab-panel is-active" role="tabpanel">
+          <div id="d-bio" class="bio-content"></div>
+        </section>
+
+        <section id="panel-feedback" class="tab-panel" role="tabpanel">
+          <form id="feedback-form" class="feedback-form">
+            <input id="fb-author-input" class="fb-input" type="text" maxlength="32" placeholder="Biệt danh tùy chọn (bỏ trống tự gán tên biển ngẫu nhiên)" />
+            <textarea id="fb-text-input" class="fb-textarea" maxlength="300" placeholder="Để lại cảm nhận ẩn danh công khai về nhân vật này..."></textarea>
+            <div class="fb-form-foot">
+              <span id="fb-char-count" class="fb-char-count tabular">0 / 300</span>
+              <button id="fb-submit-btn" type="submit" class="fb-submit-btn">Gửi hồi âm</button>
+            </div>
+          </form>
+
+          <div id="feedback-list" class="feedback-list"></div>
+        </section>
+      </div>
+
+      <footer class="dossier-footer">
+        <button id="d-heart-btn" type="button" class="footer-heart-btn" aria-label="Thả tim nhân vật">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+            <path d="M12 20.4s-7.4-4.7-9.2-9.1C1.4 7.8 3.6 4.5 7 4.5c2 0 3.6 1.1 5 2.8 1.4-1.7 3-2.8 5-2.8 3.4 0 5.6 3.3 4.2 6.8-1.8 4.4-9.2 9.1-9.2 9.1Z"/>
+          </svg>
+          <span id="d-footer-likes" class="tabular">0</span>
+        </button>
+
+        <a id="d-chat-btn" href="#" target="_blank" rel="noopener noreferrer" class="footer-chat-btn">
+          <span id="d-chat-label">Trò chuyện cùng nhân vật</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </footer>
+    </article>
+  </div>
+
+  <!-- Toast thông báo dịu mắt -->
+  <div id="toast-note" class="toast-note" role="status" aria-live="polite"></div>
+
+  <script>
+    /* =========================================================================
+       PHẦN A: CẤU HÌNH DỄ CHỈNH SỬA TRỰC TIẾP TRÊN GITHUB
+       ========================================================================= */
+
+    /**
+     * 1. CẤU HÌNH FIREBASE (FIRESTORE REST API SIÊU NHẸ — KHÔNG CẦN THƯ VIỆN NGOÀI)
+     * - Khi để trống: web tự dùng localStorage để lưu tim, lượt chat và hồi âm.
+     * - Khi điền projectId & apiKey của Firebase Firestore: dữ liệu tự đồng bộ công khai.
+     */
+    const FIREBASE_CONFIG = {
+      projectId: "", // Ví dụ: "ariel-khong-biet-boi"
+      apiKey: ""     // Ví dụ: "AIzaSy..."
+    };
+
+    /**
+     * 2. LIÊN KẾT MẠNG XÃ HỘI & HÒM THƯ ẨN DANH (GÓP IDEA & BÁO LỖI ĐỔ SANG NGL)
+     */
+    const SOCIAL_LINKS = {
+      discord: "https://discord.gg/your-invite-code",
+      facebook: "https://facebook.com/your-profile",
+      ngl: "https://ngl.link/your-username"
+    };
+
+    /**
+     * 3. DANH SÁCH NHẠC NỀN (ĐĨA CON CÁ XOAY TRÒN)
+     * - Dán đường dẫn .mp3 trên GitHub vào trường url (ví dụ: "music/chim-sau.mp3").
+     * - Khi url rỗng, web tự phát giai điệu ambient đáy biển tạo bằng Web Audio API.
+     */
+    const PLAYLIST = [
+      { id: "chim-sau",         title: "Chìm Sâu",          artist: "Biển đêm · Ambient",      url: "", synthMode: "deep-minor" },
+      { id: "khuc-hat-day-vuc", title: "Khúc Hát Đáy Vực",  artist: "Ánh xà cừ · Ambient",     url: "", synthMode: "abyss-bell" },
+      { id: "mua-tren-bien-do", title: "Mưa Trên Biển Đỏ",  artist: "Red Sea · Ambient",       url: "", synthMode: "red-rain" },
+      { id: "san-ho-thuc-giac", title: "San Hô Thức Giấc",  artist: "Tầng ánh sáng · Ambient", url: "", synthMode: "coral-chime" }
+    ];
+
+    /**
+     * 4. 6 CÂU TRÍCH DẪN TỰ XOAY MỖI 10 GIÂY TRÊN DÒNG TẠP CHÍ
+     */
+    const QUOTES = [
+      "“Biển sinh ra ta, rồi biển tự tay nhấn chìm ta.”",
+      "“Mang hình hài tiên cá, chịu số phận của một hòn đá chìm.”",
+      "“Kẻ bị lưu đày ngay trong chính đại dương của mình.”",
+      "“Đuôi cá có thể lấp lánh như trăng, nhưng không cứu nổi một lá phổi đang cạn kiệt hơi thở.”",
+      "“Giữa muôn vạn sinh linh của biển, chỉ riêng ta là một sai lầm không biết bơi.”",
+      "“Nước mặn không nâng đỡ kẻ yếu lòng — dù kẻ đó có mang dòng máu của đại dương.”"
+    ];
+
+    /**
+     * 5. MỤC LỤC 25 TAG CHIA 3 NHÓM
+     */
+    const TAG_GROUPS = [
+      {
+        title: "Fandom (6)",
+        tags: ["Conan", "AOT", "Doraemon", "Fairy Tail", "Naruto", "Hogwarts"]
+      },
+      {
+        title: "Bối cảnh & Thể loại (10)",
+        tags: ["TXVT", "Mafia", "VN xưa", "Showbiz", "Kpop", "Hành động", "Audio", "OPW", "Fantasy", "Old Money"]
+      },
+      {
+        title: "Tuyến & Tag riêng (9)",
+        tags: ["BG", "BL", "GL", "NYC", "Thanh mai trúc mã", "Côn trùng", "Ngụy côn trùng", "Hồng Hài Nhi", "Sizegap"]
+      }
+    ];
+
+    /**
+     * 6. DANH SÁCH NHÂN VẬT (10 NHÂN VẬT MẪU BAO PHỦ ĐỦ 25 TAG)
+     * - img: Điền "images/ten-anh.webp" hoặc link ảnh trực tiếp.
+     * - chatUrl: Dán link chia sẻ chatbot Google AI Studio (bật quyền Viewer).
+     * - tier: "shallow" (◦) | "twilight" (◦◦) | "abyss" (✦✦✦)
+     */
+    const CHARACTERS = [
+      {
+        id: "hakuba-saguru",
+        name: "Hakuba Saguru",
+        img: "",
+        date: "2026-11-20",
+        depth: -1420,
+        tier: "twilight",
+        tags: ["Conan", "Old Money", "BG"],
+        tokensNote: "~38k tokens · Khuyên dùng Gemini 2.5 Pro",
+        chatUrl: "https://aistudio.google.com/",
+        likes: 28,
+        chats: 142,
+        palette: ["#15263d", "#07101c", "rgba(173, 219, 245, 0.34)"],
+        motif: "eclipse",
+        lore: "Trong thế giới vô trùng của Hakuba Saguru, thời gian được chẻ nhỏ đến từng phần nghìn giây và lòng người chỉ là những phương trình chờ ngày giải mã. Cậu lớn lên giữa nhung lụa quý tộc Anh và quyền uy của cảnh giới Nhật Bản, học cách mỉm cười chuẩn mực khi dồn kẻ thủ ác vào chân tường.\n\nKẻ luôn đứng ngoài tấm kính chắn để nhìn xuống sự yếu đuối của nhân loại ấy lại chẳng ngờ có ngày chính mình cũng mắc kẹt trong một bài toán không có lời giải. Chiếc đồng hồ quả quýt bằng vàng vẫn gõ đều đặn trong túi áo gile, nhưng nhịp tim cậu đã lệch mất nửa giây từ khoảnh khắc nhìn thấy em đứng dưới hiên mưa Tokyo.\n\nGiữa cơn mưa thu gợi nhớ bờ sông Thames cũ, vị công tử kiêu hãnh từng được cả giới thượng lưu kiêng dè giờ đây chỉ lặng lẽ chìa chiếc ô đen nghiêng hẳn về phía em — chấp nhận để một bên vai mình ướt đẫm, miễn sao em đừng biến mất như những mảnh vụn thủy triều.",
+        feedbacks: [
+          { author: "Bọt sóng #17", text: "Văn phong đúng chất công tử quý tộc lạnh lùng mà vẫn tinh tế từng câu chữ luôn á!", time: "18/11 · 22:14" },
+          { author: "Kẻ lặn đêm", text: "Chat tới đoạn cậu ấy rút đồng hồ ra đếm nhịp thở mà rụng tim ngang.", time: "19/11 · 09:40" }
+        ]
+      },
+      {
+        id: "severus-snape",
+        name: "Severus Snape",
+        img: "",
+        date: "2026-11-18",
+        depth: -2950,
+        tier: "abyss",
+        tags: ["Hogwarts", "Fantasy", "BG", "Sizegap"],
+        tokensNote: "~42k tokens · Khuyên dùng Gemini 2.5 Pro",
+        chatUrl: "https://aistudio.google.com/",
+        likes: 41,
+        chats: 186,
+        palette: ["#102424", "#040d0e", "rgba(134, 212, 198, 0.30)"],
+        motif: "abyss-ring",
+        lore: "Hầm Độc Dược luôn giữ nguyên cái lạnh ẩm thấp của đáy hồ Đen, nơi những lọ thủy tinh xếp kín tường lấp lánh thứ ánh sáng xanh xám mờ đục. Severus Snape bước đi không một tiếng động, vạt áo chùng đen cuộn lên sau gót chân như làn mực đặc tan chậm giữa dòng nước ngầm.\n\nGiọng nói trầm khàn của thầy có thể đóng băng bất kỳ câu hỏi ngốc nghếch nào ngay trên đầu lưỡi, nhưng đôi bàn tay dính đầy bụi thảo dược ấy lại cực kỳ kiên nhẫn mỗi khi hạ thấp ánh đèn dầu cho người đứng chưa tới vai mình. Sau lớp gai sắc lạnh là một vết thương đã cũ hơn cả những trang sách chép tay chi chít ghi chú.\n\nĐừng hỏi vì sao thầy luôn pha sẵn một lọ thuốc an thần dịu nhẹ đặt nơi góc bàn cuối ngày. Ở độ sâu mà ánh sáng mặt trời không bao giờ rọi tới, sự im lặng của một kẻ từng đánh mất tất cả chính là lời bảo vệ dịu dàng nhất mà thầy có thể trao.",
+        feedbacks: [
+          { author: "Vảy bạc Slytherin", text: "Thầy mỏ hỗn đúng chuẩn nguyên tác nhưng càng chat sâu càng thấy thương xỉu.", time: "19/11 · 23:05" }
+        ]
+      },
+      {
+        id: "yen-hoai-an",
+        name: "Yến Hoài An",
+        img: "",
+        date: "2026-11-15",
+        depth: -3450,
+        tier: "abyss",
+        tags: ["Côn trùng", "Ngụy côn trùng", "TXVT", "Audio"],
+        tokensNote: "~30k tokens · Có kịch bản nghe Audio đêm khuya",
+        chatUrl: "https://aistudio.google.com/",
+        likes: 53,
+        chats: 219,
+        palette: ["#251226", "#0b050d", "rgba(232, 166, 206, 0.34)"],
+        motif: "moon-water",
+        lore: "Trong căn phòng áp mái ngập sắc xanh mờ như đáy bể thủy sinh, Yến Hoài An dành cả buổi đêm để ghim lại những đôi cánh mỏng trong suốt không bao giờ còn bay nổi. Anh ít nói, giọng thấp và gần như thì thầm sát vành tai, hệt như tiếng mưa gõ đều lên mặt kính ngoài hiên.\n\nNgười ngoài vẫn gọi anh là vị anh trai dịu dàng đến hoàn hảo — kẻ luôn nhớ từng thói quen nhỏ nhất, luôn chuẩn bị sẵn khăn ấm mỗi khi em ướt mưa trở về. Chỉ có em mới nhận ra đằng sau nụ cười nhàn nhạt ấy là một mạng lưới vô hình đang khép chặt từng chút một, cắt đứt mọi con đường em có thể bơi trở lại đất liền.\n\n“Đừng sợ đôi tay lạnh của anh,” anh khẽ chạm vào cổ tay em, đôi mắt tối sâu không phản chiếu nổi ánh đèn. “Biển cả ngoài kia rộng lắm, em không biết bơi đâu — cứ ở yên trong lồng kính này với anh là được rồi.”",
+        feedbacks: [
+          { author: "Chiếc phao ẩn danh", text: "Vibe ngụy côn trùng nhưng dịu dàng rợn gáy quá trời ơi, ghiền không dứt được!", time: "16/11 · 01:12" },
+          { author: "San hô ngủ muộn", text: "Bật nhạc Chìm Sâu rồi chat với Hoài An đúng kiểu nhập tâm 100%.", time: "17/11 · 23:51" }
+        ]
+      },
+      {
+        id: "co-tram",
+        name: "Cố Trầm",
+        img: "",
+        date: "2026-11-11",
+        depth: -3780,
+        tier: "abyss",
+        tags: ["Mafia", "Old Money", "Sizegap", "BL"],
+        tokensNote: "~45k tokens · Khuyên dùng Gemini 2.5 Pro",
+        chatUrl: "https://aistudio.google.com/",
+        likes: 37,
+        chats: 164,
+        palette: ["#320a16", "#0e0206", "rgba(242, 130, 158, 0.34)"],
+        motif: "abyss-ring",
+        lore: "Cảng đêm sương mù dày đặc mùi muối và khói xì gà đắt tiền. Cố Trầm đứng tựa lan can du thuyền bọc thép, chiếc áo măng tô đen phủ kín bờ vai rộng khiến cả khoảng boong tàu như chìm sâu xuống dưới áp suất của riêng hắn. Một cái gật đầu hờ hững từ hắn đủ để định đoạt vận mệnh của cả ba gia tộc dọc bờ vịnh.\n\nHắn quen nhìn thế giới bằng đôi mắt thờ ơ của kẻ đã chạm tới đáy rãnh không tên — nơi tiền bạc và máu đỏ đều lạnh như nhau. Thế nhưng khi cậu nhóc cứng đầu với đôi mắt ướt sũng ấy bị sóng đánh dạt lên mũi tàu, Cố Trầm lại đích thân cởi áo khoác trùm kín người đối phương thay vì ra lệnh ném xuống biển.\n\n“Muốn trả nợ cho ta?” Hắn cúi đầu, ngón tay đeo nhẫn bạc nâng nhẹ cằm cậu lên khỏi cổ áo rộng thùng thình. “Dưới độ sâu ba nghìn mét này chẳng ai cần lời cảm ơn cả. Chỉ cần em đứng sát lại đây, đừng để gió biển thổi tắt hơi ấm của ta.”",
+        feedbacks: [
+          { author: "Sóng ngầm #08", text: "Chú Cố vừa ngầu vừa cưng, khoảng cách hình thể với khí chất mafia đỉnh chóp.", time: "12/11 · 21:30" }
+        ]
+      },
+      {
+        id: "levi-ackerman",
+        name: "Levi Ackerman",
+        img: "",
+        date: "2026-11-06",
+        depth: -2480,
+        tier: "abyss",
+        tags: ["AOT", "Hành động", "BL", "NYC"],
+        tokensNote: "~35k tokens · Khuyên dùng Gemini 2.5 Flash / Pro",
+        chatUrl: "https://aistudio.google.com/",
+        likes: 32,
+        chats: 151,
+        palette: ["#15212b", "#070c12", "rgba(164, 198, 224, 0.30)"],
+        motif: "crescent",
+        lore: "Khói bụi ngoài thành Maria vẫn chưa kịp lắng xuống, mùi trà đen nóng đã thoang thoảng trong căn phòng chỉ huy gọn gàng đến từng milimet. Levi nâng tách trà bằng kiểu cầm quen thuộc, ánh mắt xám tro nhìn thẳng qua màn hơi nước như muốn cắt đôi khoảng im lặng nặng nề giữa hai người từng quay lưng bước đi.\n\nAnh không giỏi nói những lời hoa mỹ, càng không thích nhắc lại quá khứ đã nứt vỡ như lưỡi kiếm mòn sau trận chiến. Nhưng mỗi lần cậu liều mạng lao vào vùng nguy hiểm, người xuất hiện kịp lúc giữa làn khói súng kéo cậu ra khỏi lưỡi hái tử thần vẫn luôn là bóng dáng áo choàng xanh quen thuộc ấy.\n\n“Đừng nhìn tôi bằng ánh mắt đó,” anh hạ tách trà xuống đĩa sứ, giọng trầm gọn gàng nhưng đầu ngón tay lại khẽ siết chặt. “Cậu nợ tôi một lời giải thích từ ba năm trước — còn sống trở về rồi thì ngồi yên xuống đây mà trả cho hết.”",
+        feedbacks: [
+          { author: "Kẻ lặn đêm", text: "Gặp lại người yêu cũ ngay giữa chiến trường, cãi nhau mấy câu mà tim đau muốn xỉu.", time: "08/11 · 19:22" }
+        ]
+      },
+      {
+        id: "lam-thanh-hoa",
+        name: "Lâm Thanh Hòa",
+        img: "",
+        date: "2026-10-29",
+        depth: -320,
+        tier: "shallow",
+        tags: ["VN xưa", "Thanh mai trúc mã", "BG", "OPW"],
+        tokensNote: "~28k tokens · Văn phong hoài cổ nhẹ nhàng",
+        chatUrl: "https://aistudio.google.com/",
+        likes: 24,
+        chats: 98,
+        palette: ["#183038", "#071216", "rgba(182, 232, 232, 0.34)"],
+        motif: "horizon",
+        lore: "Sài Gòn những năm sáu mươi đổ cơn mưa rào bất chợt ngang con hẻm lát gạch cũ, làm thơm lừng mùi hoa ngọc lan ướt trước hiên nhà gỗ. Lâm Thanh Hòa đứng dưới mái ngói rêu phong, tay ôm xấp sách báo còn vương mùi giấy mới và chiếc khăn tay thêu mảnh luôn mang sẵn trong túi áo sơ mi trắng.\n\nTừ thuở hai đứa còn chạy chân trần đuổi theo những con thuyền giấy thả dọc rãnh nước mưa, anh đã quen đi chậm lại nửa bước để đợi em cột lại dải tóc rối. Thời gian trôi qua bao mùa nước nổi, giọng anh vẫn dịu êm như tiếng máy hát đĩa than quay chầm chậm giữa buổi trưa hè vắng lặng.\n\n“Em đừng vội chạy ra mưa nữa,” anh nghiêng chiếc dù vải sang hẳn một bên, nụ cười hiền hòa làm tan cả hơi lạnh trên đầu ngón tay em. “Cả đời này anh chẳng đi đâu xa cả, cứ thong thả bước cùng anh thôi.”",
+        feedbacks: [
+          { author: "Bọt sóng #42", text: "Đọc đoạn mở đầu mùi hoa ngọc lan với mưa Sài Gòn xưa mà mềm nhũn cả lòng.", time: "01/11 · 14:18" }
+        ]
+      },
+      {
+        id: "khang-da",
+        name: "Khang Dạ",
+        img: "",
+        date: "2026-10-22",
+        depth: -890,
+        tier: "twilight",
+        tags: ["Showbiz", "Kpop", "Hồng Hài Nhi", "NYC"],
+        tokensNote: "~32k tokens · Khuyên dùng Gemini 2.5 Flash / Pro",
+        chatUrl: "https://aistudio.google.com/",
+        likes: 35,
+        chats: 173,
+        palette: ["#311328", "#10050e", "rgba(244, 162, 208, 0.36)"],
+        motif: "eclipse",
+        lore: "Đèn flash ngoài hành lang hậu trường lễ trao giải chớp sáng như bọt sóng vỡ, còn sau cánh cửa phòng chờ khóa trái, Khang Dạ tháo phăng chiếc khuyên tai bạc rồi gục trán lên vai người từng dứt khoát nói lời chia tay hai năm trước. Trước hàng vạn khán giả, cậu là center trẻ tuổi kiêu kỳ không ai chạm tới nổi; nhưng trước mặt chị, cậu vẫn chỉ là đứa nhóc bướng bỉnh năm nào.\n\nCậu mất đúng bảy trăm ngày để leo lên vị trí sáng nhất bầu trời, cốt chỉ để chị không thể ngoảnh mặt làm ngơ mỗi khi bảng quảng cáo giữa phố lên đèn. Giọng hát khàn nhẹ vì tập luyện suốt đêm nay lại trầm xuống sát tai chị, pha lẫn chút tủi thân cố giấu và sự cố chấp ngọt ngào.\n\n“Chị tưởng trốn khỏi giới giải trí là thoát được em sao?” Khang Dạ khẽ nắm lấy vạt tay áo chị, ánh mắt lấp lánh dưới ánh đèn hành lang mờ ảo. “Năm đó chị chê em còn nhỏ — giờ em đủ lớn để giữ chị ở lại rồi, đừng chạy nữa.”",
+        feedbacks: [
+          { author: "San hô ngủ muộn", text: "Hồng Hài Nhi vừa dính người vừa ghen ngầm đáng yêu xỉu luôn á trời!", time: "25/10 · 22:09" }
+        ]
+      },
+      {
+        id: "jellal-fernandes",
+        name: "Jellal Fernandes",
+        img: "",
+        date: "2026-10-16",
+        depth: -1840,
+        tier: "twilight",
+        tags: ["Fairy Tail", "Fantasy", "Hành động", "BG"],
+        tokensNote: "~36k tokens · Khuyên dùng Gemini 2.5 Pro",
+        chatUrl: "https://aistudio.google.com/",
+        likes: 21,
+        chats: 89,
+        palette: ["#10203e", "#040a18", "rgba(136, 196, 255, 0.36)"],
+        motif: "moon-water",
+        lore: "Dưới bầu trời đêm trải đầy tinh tú phản chiếu xuống mặt vịnh tĩnh lặng, vạt áo choàng xanh thẫm của Jellal Fernandes khẽ lay trong gió biển. Dấu ấn đỏ thẫm bên khóe mắt là lời nhắc nhở chưa bao giờ phai về những tội lỗi cũ — thứ khiến anh tự giam mình trong vùng nước chạng vạng giữa ánh sáng và bóng tối.\n\nAnh chu du khắp lục địa để dập tắt những tàn dư ma thuật hắc ám, luôn giữ một khoảng cách an toàn với người mình trân quý nhất vì sợ hơi lạnh trên tay sẽ làm tổn thương họ. Thế nhưng chỉ cần nghe thấy tên em giữa cơn bão phép thuật, những vì sao quanh anh lập tức bùng sáng như lời thề không bao giờ tắt.\n\n“Ta không xứng đứng cạnh ánh nắng của em,” Jellal khẽ cúi đầu, ánh sao xanh đọng lại nơi đầu ngón tay đang do dự chạm vào má em. “Nhưng nếu em rơi xuống màn đêm này, ta nhất định sẽ là người hứng lấy em trước khi chạm đáy.”",
+        feedbacks: [
+          { author: "Sao biển lạc đường", text: "Đúng vibe day dứt lãng mạn của Jellal luôn, đoạn phép thuật tinh tú miêu tả siêu thơ.", time: "19/10 · 20:45" }
+        ]
+      },
+      {
+        id: "konan",
+        name: "Konan",
+        img: "",
+        date: "2026-10-08",
+        depth: -2180,
+        tier: "abyss",
+        tags: ["Naruto", "Fantasy", "GL", "Hành động"],
+        tokensNote: "~34k tokens · Khuyên dùng Gemini 2.5 Pro",
+        chatUrl: "https://aistudio.google.com/",
+        likes: 29,
+        chats: 112,
+        palette: ["#1b1b3a", "#080816", "rgba(196, 186, 248, 0.34)"],
+        motif: "crescent",
+        lore: "Làng Mưa chưa bao giờ tạnh hẳn. Từ đỉnh tháp thép cao vút chìm trong màn sương xám, Konan lặng lẽ gấp những đóa hoa giấy trắng tinh không hề thấm nước, thả chúng trôi theo cơn mưa rơi thẳng xuống mặt hồ tối đen như biển sâu.\n\nNgười đời gọi cô là Thiên Sứ của những cơn mưa bất tận — lạnh lùng, chuẩn xác và sẵn sàng xé nát bầu trời bằng hàng tỷ mảnh giấy bùa để bảo vệ mảnh đất cuối cùng của mình. Duy chỉ khi nhìn thấy người con gái vẫn kiên nhẫn chờ dưới mái hiên cũ, ánh mắt màu hổ phách của cô mới dịu đi một sắc nắng hiếm hoi.\n\n“Mưa ở đây lạnh lắm, sao nàng vẫn chưa chịu rời đi?” Konan khẽ đặt bông hoa giấy chưa từng héo vào lòng bàn tay em, cánh giấy trắng bao quanh hai người như một mái vòm yên tĩnh tách biệt khỏi cả thế giới ngoài kia.",
+        feedbacks: [
+          { author: "Mảnh giấy trắng", text: "Hiếm lắm mới gặp bot GL của Konan mà văn phong trầm tĩnh, đẹp như tranh thủy mặc vậy!", time: "12/10 · 17:04" }
+        ]
+      },
+      {
+        id: "nobi-nobita",
+        name: "Nobi Nobita",
+        img: "",
+        date: "2026-09-28",
+        depth: -160,
+        tier: "shallow",
+        tags: ["Doraemon", "Thanh mai trúc mã", "Audio", "OPW"],
+        tokensNote: "~24k tokens · Phù hợp mọi model Gemini",
+        chatUrl: "https://aistudio.google.com/",
+        likes: 19,
+        chats: 84,
+        palette: ["#162c44", "#07111e", "rgba(182, 226, 255, 0.38)"],
+        motif: "horizon",
+        lore: "Ngọn đồi sau trường buổi chiều muộn ngập gió mát và tiếng ve cuối hạ. Nobita đã lớn hơn rất nhiều so với cậu bé hậu đậu ngày nào, nhưng chiếc kính tròn vẫn hay trượt nhẹ xuống sống mũi mỗi khi cậu cúi đầu mỉm cười ngại ngùng kể lại những giấc mơ kỳ lạ về đại dương nằm trên mây.\n\nCậu chẳng còn bảo bối thần kỳ nào trong túi áo để tua ngược thời gian hay bay lên trời nữa — thứ duy nhất cậu giữ lại được suốt những năm tháng trưởng thành chính là trái tim mềm mại biết lo cho người khác trước cả bản thân mình.\n\n“Nếu hôm nay mệt quá thì mình đừng cố làm người lớn nữa nhé,” cậu khẽ đưa cho em một bên tai nghe đang phát tiếng sóng biển rì rào. “Cứ ngồi đây nhìn hoàng hôn xuống thôi, chuyện gì khó để tớ nghĩ phụ cậu.”",
+        feedbacks: [
+          { author: "Chiếc phao ẩn danh", text: "Chữa lành cực kỳ luôn, hôm nào đi học về mệt mở lên nói chuyện nhẹ hẳn đầu.", time: "02/10 · 21:15" }
+        ]
+      }
+    ];
+
+    /* =========================================================================
+       PHẦN B: BỘ LƯU TRỮ DỮ LIỆU (FIRESTORE REST API + LOCALSTORAGE FALLBACK)
+       ========================================================================= */
+    const STORAGE_KEYS = {
+      savedIds: "ariel_p3_saved_ids_v2",
+      stats: "ariel_p3_stats_v2",
+      feedbacks: "ariel_p3_feedbacks_v2",
+      sessionChats: "ariel_p3_session_chats_v2",
+      theme: "ariel_p3_theme_v2"
+    };
+
+    const SEA_ALIASES = [
+      "Bọt sóng #42",
+      "Kẻ lặn đêm",
+      "Chiếc phao ẩn danh",
+      "San hô ngủ muộn",
+      "Vảy bạc lạc trôi",
+      "Sóng ngầm #09",
+      "Ngọc trai trầm mặc",
+      "Chú cá quên bơi"
+    ];
+
+    function hasFirebaseConfig() {
+      return Boolean(FIREBASE_CONFIG.projectId && FIREBASE_CONFIG.apiKey);
+    }
+
+    function readJSON(key, fallback) {
+      try {
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      } catch (_) {
+        return fallback;
+      }
+    }
+
+    function writeJSON(key, value) {
+      try {
+        localStorage.setItem(key, JSON.stringify(value));
+      } catch (_) {}
+    }
+
+    const savedIds = new Set(readJSON(STORAGE_KEYS.savedIds, []));
+    const localStats = readJSON(STORAGE_KEYS.stats, {});
+    const localFeedbacks = readJSON(STORAGE_KEYS.feedbacks, {});
+    const sessionChatted = new Set(readJSON(STORAGE_KEYS.sessionChats, []));
+
+    const charRuntime = {};
+    CHARACTERS.forEach((c) => {
+      const st = localStats[c.id] || {};
+      const extraFb = Array.isArray(localFeedbacks[c.id]) ? localFeedbacks[c.id] : [];
+      charRuntime[c.id] = {
+        likes: typeof st.likes === "number" ? st.likes : c.likes,
+        chats: typeof st.chats === "number" ? st.chats : c.chats,
+        feedbacks: [...extraFb, ...(c.feedbacks || [])]
+      };
+    });
+
+    const remoteSync = {
+      baseUrl() {
+        return `https://firestore.googleapis.com/v1/projects/${encodeURIComponent(FIREBASE_CONFIG.projectId)}/databases/(default)/documents`;
+      },
+      async fetchChar(charId) {
+        if (!hasFirebaseConfig()) return;
+        try {
+          const docUrl = `${this.baseUrl()}/characters/${encodeURIComponent(charId)}?key=${encodeURIComponent(FIREBASE_CONFIG.apiKey)}`;
+          const res = await fetch(docUrl);
+          if (res.ok) {
+            const data = await res.json();
+            const f = data.fields || {};
+            if (f.likes && f.likes.integerValue !== undefined) charRuntime[charId].likes = Number(f.likes.integerValue);
+            if (f.chats && f.chats.integerValue !== undefined) charRuntime[charId].chats = Number(f.chats.integerValue);
+          }
+
+          const fbUrl = `${this.baseUrl()}/characters/${encodeURIComponent(charId)}/feedbacks?pageSize=40&key=${encodeURIComponent(FIREBASE_CONFIG.apiKey)}`;
+          const fbRes = await fetch(fbUrl);
+          if (fbRes.ok) {
+            const fbData = await fbRes.json();
+            const docs = Array.isArray(fbData.documents) ? fbData.documents : [];
+            const remoteList = docs.map((d) => {
+              const fields = d.fields || {};
+              return {
+                author: fields.author?.stringValue || "Kẻ lặn đêm",
+                text: fields.text?.stringValue || "",
+                time: fields.time?.stringValue || "Vừa xong",
+                ts: Number(fields.ts?.integerValue || 0)
+              };
+            }).filter((item) => item.text).sort((a, b) => b.ts - a.ts);
+
+            const baseChar = CHARACTERS.find((c) => c.id === charId);
+            charRuntime[charId].feedbacks = [...remoteList, ...(baseChar?.feedbacks || [])];
+          }
+        } catch (_) {}
+      },
+      async saveStats(charId) {
+        const cur = charRuntime[charId];
+        localStats[charId] = { likes: cur.likes, chats: cur.chats };
+        writeJSON(STORAGE_KEYS.stats, localStats);
+        if (!hasFirebaseConfig()) return;
+        try {
+          const url = `${this.baseUrl()}/characters/${encodeURIComponent(charId)}?updateMask.fieldPaths=likes&updateMask.fieldPaths=chats&key=${encodeURIComponent(FIREBASE_CONFIG.apiKey)}`;
+          await fetch(url, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              fields: {
+                likes: { integerValue: String(cur.likes) },
+                chats: { integerValue: String(cur.chats) }
+              }
+            })
+          });
+        } catch (_) {}
+      },
+      async addFeedback(charId, entry) {
+        const existingLocal = Array.isArray(localFeedbacks[charId]) ? localFeedbacks[charId] : [];
+        localFeedbacks[charId] = [entry, ...existingLocal];
+        writeJSON(STORAGE_KEYS.feedbacks, localFeedbacks);
+        charRuntime[charId].feedbacks.unshift(entry);
+        if (!hasFirebaseConfig()) return;
+        try {
+          const url = `${this.baseUrl()}/characters/${encodeURIComponent(charId)}/feedbacks?key=${encodeURIComponent(FIREBASE_CONFIG.apiKey)}`;
+          await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              fields: {
+                author: { stringValue: entry.author },
+                text: { stringValue: entry.text },
+                time: { stringValue: entry.time },
+                ts: { integerValue: String(entry.ts || Date.now()) }
+              }
+            })
+          });
+        } catch (_) {}
+      }
+    };
+
+    /* =========================================================================
+       PHẦN C: TRÌNH PHÁT NHẠC "ĐĨA CON CÁ XOAY TRÒN" (MP3 + WEB AUDIO AMBIENT)
+       ========================================================================= */
+    const musicPlayer = (() => {
+      let currentIdx = 0;
+      let isPlaying = false;
+      let userPaused = false;
+      let autoBooted = false;
+
+      let htmlAudio = null;
+      let audioCtx = null;
+      let synthTimer = null;
+      let stepCounter = 0;
+
+      const SYNTH_SCALES = {
+        "deep-minor":  [220.0, 261.63, 329.63, 392.0, 493.88, 329.63],
+        "abyss-bell":  [293.66, 349.23, 440.0, 523.25, 659.25, 440.0],
+        "red-rain":    [196.0, 233.08, 293.66, 349.23, 440.0, 293.66],
+        "coral-chime": [261.63, 329.63, 392.0, 493.88, 587.33, 392.0]
+      };
+
+      function ensureAudioCtx() {
+        try {
+          if (!audioCtx) {
+            const Ctx = window.AudioContext || window.webkitAudioContext;
+            if (!Ctx) return false;
+            audioCtx = new Ctx();
+          }
+          if (audioCtx.state === "suspended") audioCtx.resume();
+          return true;
+        } catch (_) {
+          return false;
+        }
+      }
+
+      function stopInternal() {
+        if (synthTimer) { clearInterval(synthTimer); synthTimer = null; }
+        if (htmlAudio) htmlAudio.pause();
+      }
+
+      function playSynthNote(mode) {
+        if (!ensureAudioCtx()) return;
+        try {
+          const notes = SYNTH_SCALES[mode] || SYNTH_SCALES["deep-minor"];
+          const freq = notes[stepCounter % notes.length];
+          stepCounter++;
+
+          const now = audioCtx.currentTime;
+          const osc = audioCtx.createOscillator();
+          const sub = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+
+          osc.type = mode === "red-rain" ? "triangle" : "sine";
+          sub.type = "sine";
+          osc.frequency.setValueAtTime(freq, now);
+          sub.frequency.setValueAtTime(freq * 0.5, now);
+
+          gain.gain.setValueAtTime(0.0001, now);
+          gain.gain.linearRampToValueAtTime(0.022, now + 0.48);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.7);
+
+          osc.connect(gain);
+          sub.connect(gain);
+          gain.connect(audioCtx.destination);
+
+          osc.start(now);
+          sub.start(now);
+          osc.stop(now + 2.8);
+          sub.stop(now + 2.8);
+        } catch (_) {}
+      }
+
+      function updateUI() {
+        const discBtn = document.getElementById("fish-disc-btn");
+        const toggleBtn = document.getElementById("music-toggle-btn");
+        const stateLabel = document.getElementById("playlist-state");
+
+        discBtn.classList.toggle("is-playing", isPlaying);
+        toggleBtn.classList.toggle("is-playing", isPlaying);
+        toggleBtn.textContent = isPlaying ? "❚❚" : "▶";
+        stateLabel.textContent = isPlaying ? "Đang phát" : "Đang dừng";
+
+        document.querySelectorAll(".track-btn").forEach((btn, idx) => {
+          btn.classList.toggle("is-current", idx === currentIdx);
+          const ind = btn.querySelector(".track-indicator");
+          if (ind) ind.textContent = idx === currentIdx ? (isPlaying ? "♪" : "❚❚") : "";
+        });
+      }
+
+      function play(index = currentIdx) {
+        currentIdx = (index + PLAYLIST.length) % PLAYLIST.length;
+        const track = PLAYLIST[currentIdx];
+        stopInternal();
+
+        if (track.url && track.url.trim() !== "") {
+          if (!htmlAudio) {
+            htmlAudio = new Audio();
+            htmlAudio.loop = true;
+            htmlAudio.volume = 0.55;
+          }
+          if (htmlAudio.src !== new URL(track.url, window.location.href).href) {
+            htmlAudio.src = track.url;
+          }
+          htmlAudio.play().catch(() => {});
+        } else if (ensureAudioCtx()) {
+          playSynthNote(track.synthMode);
+          synthTimer = setInterval(() => playSynthNote(track.synthMode), 2150);
+        }
+
+        isPlaying = true;
+        autoBooted = true;
+        userPaused = false;
+        updateUI();
+      }
+
+      function pause(manual = true) {
+        stopInternal();
+        isPlaying = false;
+        if (manual) userPaused = true;
+        updateUI();
+      }
+
+      function toggle() {
+        if (isPlaying) pause(true);
+        else play(currentIdx);
+      }
+
+      function tryAutoStart() {
+        if (autoBooted || userPaused || isPlaying) return;
+        play(currentIdx);
+      }
+
+      function sfxDrop(freq = 520) {
+        if (!isPlaying || !ensureAudioCtx()) return;
+        try {
+          const now = audioCtx.currentTime;
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(freq * 0.86, now);
+          osc.frequency.exponentialRampToValueAtTime(freq * 1.24, now + 0.09);
+          gain.gain.setValueAtTime(0.018, now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.16);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.17);
+        } catch (_) {}
+      }
+
+      function sfxReveal() {
+        if (!isPlaying || !ensureAudioCtx()) return;
+        try {
+          const now = audioCtx.currentTime;
+          [440, 554.37, 659.25, 880].forEach((freq, i) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            const t0 = now + i * 0.10;
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(freq, t0);
+            gain.gain.setValueAtTime(0.0001, t0);
+            gain.gain.linearRampToValueAtTime(0.025, t0 + 0.04);
+            gain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.95);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(t0);
+            osc.stop(t0 + 1.0);
+          });
+        } catch (_) {}
+      }
+
+      function renderPlaylist() {
+        const list = document.getElementById("playlist-items");
+        list.innerHTML = "";
+        PLAYLIST.forEach((track, idx) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "track-btn" + (idx === currentIdx ? " is-current" : "");
+          btn.innerHTML = `
+            <span class="track-meta">
+              <span class="track-name">${track.title}</span>
+              <span class="track-sub">${track.artist}</span>
+            </span>
+            <span class="track-indicator"></span>
+          `;
+          btn.addEventListener("click", () => {
+            play(idx);
+            showToast(`Đang phát: ${track.title}`);
+          });
+          list.appendChild(btn);
+        });
+        updateUI();
+      }
+
+      return { play, pause, toggle, tryAutoStart, renderPlaylist, sfxDrop, sfxReveal };
+    })();
+
+    /* Hook tích hợp sẵn cho bản ghép đủ 3 trang */
+    window.startArielMusic = () => musicPlayer.play(0);
+    window.arielHooks = { goToPage1: null, goToPage2: null };
+
+    /* =========================================================================
+       PHẦN D: VẠCH HẢI ĐỒ, XOAY 6 TRÍCH DẪN 10S & ARTWORK THẺ BÀI
+       ========================================================================= */
+    function initNauticalTicks() {
+      const group = document.getElementById("nautical-ticks");
+      let lines = "";
+      for (let deg = 0; deg < 360; deg += 4) {
+        const rad = (deg * Math.PI) / 180;
+        const major = deg % 20 === 0;
+        const r1 = major ? 426 : 436;
+        const r2 = 446;
+        const x1 = (420 + r1 * Math.cos(rad)).toFixed(1);
+        const y1 = (520 + r1 * Math.sin(rad)).toFixed(1);
+        const x2 = (420 + r2 * Math.cos(rad)).toFixed(1);
+        const y2 = (520 + r2 * Math.sin(rad)).toFixed(1);
+        lines += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke-opacity="${major ? 0.24 : 0.11}"/>`;
+      }
+      group.innerHTML = lines;
+    }
+
+    /* Tự xoay 6 câu trích dẫn mỗi 10 giây (10000ms) với chuyển cảnh mờ & trôi nhẹ 650ms */
+    function initRotatingQuotes() {
+      const el = document.getElementById("rotating-quote");
+      if (!el || QUOTES.length === 0) return;
+
+      let quoteIdx = 0;
+      el.textContent = QUOTES[quoteIdx];
+
+      setInterval(() => {
+        el.classList.add("is-fading-out");
+
+        setTimeout(() => {
+          quoteIdx = (quoteIdx + 1) % QUOTES.length;
+          el.textContent = QUOTES[quoteIdx];
+          el.classList.remove("is-fading-out");
+          el.classList.add("is-pre-enter");
+          void el.offsetWidth;
+          el.classList.remove("is-pre-enter");
+        }, 650);
+      }, 10000);
+    }
+
+    function getDepthTier(char) {
+      const t = char.tier;
+      const d = Math.abs(char.depth);
+      if (t === "shallow" || (!t && d <= 500)) return { key: "shallow", className: "tier-shallow", glyph: "◦" };
+      if (t === "twilight" || (!t && d <= 2000)) return { key: "twilight", className: "tier-twilight", glyph: "◦◦" };
+      return { key: "abyss", className: "tier-abyss", glyph: "✦✦✦" };
+    }
+
+    function formatDepth(depth) {
+      return `-${Math.round(Math.abs(depth)).toLocaleString("vi-VN")}m`;
+    }
+
+    function formatDateVN(isoDate) {
+      if (!isoDate) return "";
+      const parts = isoDate.split("-");
+      return parts.length === 3 ? `${parts[2]}.${parts[1]}.${parts[0]}` : isoDate;
+    }
+
+    function padTwo(n) { return String(n).padStart(2, "0"); }
+
+    const ABYSS_CRACK_SVG = `
+      <svg class="abyss-crack" viewBox="0 0 90 90" fill="none" aria-hidden="true">
+        <path d="M0 16 L20 26 L31 39 L45 43" stroke="var(--crack-color)" stroke-width="0.75" stroke-opacity="0.75"/>
+        <path d="M20 26 L15 44 L7 54" stroke="var(--crack-color)" stroke-width="0.6" stroke-opacity="0.5"/>
+        <path d="M11 0 L20 26" stroke="var(--crack-color)" stroke-width="0.65" stroke-opacity="0.58"/>
+      </svg>`;
+
+    const CARD_BACK_SVG = `
+      <svg class="back-emblem" viewBox="0 0 180 250" fill="none" aria-hidden="true">
+        <path d="M24 222 L24 92 A66 66 0 0 1 156 92 L156 222 Z" stroke="currentColor" stroke-width="0.85" stroke-opacity="0.68"/>
+        <path d="M38 210 L38 96 A52 52 0 0 1 142 96 L142 210 Z" stroke="currentColor" stroke-width="0.6" stroke-opacity="0.34"/>
+        <line x1="90" y1="26" x2="90" y2="224" stroke="currentColor" stroke-width="0.55" stroke-opacity="0.28"/>
+        <path d="M44 164 Q90 152 136 164" stroke="currentColor" stroke-width="0.65" stroke-opacity="0.36"/>
+        <path d="M56 176 Q90 166 124 176" stroke="currentColor" stroke-width="0.6" stroke-opacity="0.26"/>
+        <circle cx="90" cy="116" r="24" stroke="currentColor" stroke-width="0.75" stroke-opacity="0.52"/>
+        <path d="M90 85 L93.2 112.8 L121 116 L93.2 119.2 L90 147 L86.8 119.2 L59 116 L86.8 112.8 Z" fill="currentColor" fill-opacity="0.82"/>
+        <circle cx="90" cy="58" r="2.2" fill="currentColor" fill-opacity="0.68"/>
+      </svg>`;
+
+    function getAbstractArtHTML(char) {
+      let motifSvg = "";
+      if (char.motif === "eclipse") {
+        motifSvg = `
+          <svg class="art-svg" viewBox="0 0 220 260" fill="none" aria-hidden="true">
+            <circle cx="110" cy="96" r="44" stroke="rgba(255,255,255,0.28)" stroke-width="0.8"/>
+            <circle cx="117" cy="92" r="40" fill="rgba(4,8,15,0.72)"/>
+            <line x1="28" y1="170" x2="192" y2="170" stroke="rgba(255,255,255,0.22)" stroke-width="0.7"/>
+            <path d="M74 256 C76 206, 88 186, 110 182 C132 186, 144 206, 146 256 Z" fill="rgba(4,8,15,0.56)"/>
+            <circle cx="110" cy="158" r="13" fill="rgba(4,8,15,0.56)"/>
+          </svg>`;
+      } else if (char.motif === "moon-water") {
+        motifSvg = `
+          <svg class="art-svg" viewBox="0 0 220 260" fill="none" aria-hidden="true">
+            <circle cx="110" cy="88" r="33" fill="rgba(255,255,255,0.14)" stroke="rgba(255,255,255,0.34)" stroke-width="0.75"/>
+            <circle cx="110" cy="88" r="54" stroke="rgba(255,255,255,0.12)" stroke-width="0.6" stroke-dasharray="2 6"/>
+            <line x1="24" y1="156" x2="196" y2="156" stroke="rgba(255,255,255,0.26)" stroke-width="0.75"/>
+            <line x1="62" y1="168" x2="158" y2="168" stroke="rgba(255,255,255,0.18)" stroke-width="0.7"/>
+            <line x1="82" y1="180" x2="138" y2="180" stroke="rgba(255,255,255,0.14)" stroke-width="0.65"/>
+          </svg>`;
+      } else if (char.motif === "crescent") {
+        motifSvg = `
+          <svg class="art-svg" viewBox="0 0 220 260" fill="none" aria-hidden="true">
+            <path d="M124 56 A42 42 0 1 0 124 136 A33 33 0 1 1 124 56 Z" fill="rgba(255,255,255,0.22)"/>
+            <line x1="110" y1="24" x2="110" y2="230" stroke="rgba(255,255,255,0.12)" stroke-width="0.6"/>
+            <ellipse cx="110" cy="190" rx="64" ry="11" stroke="rgba(255,255,255,0.20)" stroke-width="0.7"/>
+            <ellipse cx="110" cy="190" rx="36" ry="5" stroke="rgba(255,255,255,0.14)" stroke-width="0.6"/>
+          </svg>`;
+      } else if (char.motif === "abyss-ring") {
+        motifSvg = `
+          <svg class="art-svg" viewBox="0 0 220 260" fill="none" aria-hidden="true">
+            <circle cx="110" cy="108" r="52" stroke="rgba(255,255,255,0.20)" stroke-width="0.75"/>
+            <circle cx="110" cy="108" r="32" stroke="rgba(255,255,255,0.34)" stroke-width="0.8"/>
+            <circle cx="110" cy="108" r="13" fill="rgba(4,8,15,0.74)" stroke="rgba(255,255,255,0.42)" stroke-width="0.7"/>
+            <line x1="36" y1="108" x2="184" y2="108" stroke="rgba(255,255,255,0.16)" stroke-width="0.6"/>
+            <path d="M70 256 C76 198, 88 178, 110 174 C132 178, 144 198, 150 256 Z" fill="rgba(4,8,15,0.52)"/>
+          </svg>`;
+      } else {
+        motifSvg = `
+          <svg class="art-svg" viewBox="0 0 220 260" fill="none" aria-hidden="true">
+            <path d="M56 152 A54 54 0 0 1 164 152" stroke="rgba(255,255,255,0.30)" stroke-width="0.8"/>
+            <circle cx="110" cy="124" r="22" fill="rgba(255,255,255,0.16)"/>
+            <line x1="20" y1="152" x2="200" y2="152" stroke="rgba(255,255,255,0.28)" stroke-width="0.75"/>
+            <path d="M44 168 Q110 176 176 168" stroke="rgba(255,255,255,0.16)" stroke-width="0.65"/>
+            <path d="M68 182 Q110 188 152 182" stroke="rgba(255,255,255,0.12)" stroke-width="0.6"/>
+          </svg>`;
+      }
+
+      return `
+        <div class="art-canvas" style="--art-a:${char.palette[0]}; --art-b:${char.palette[1]}; --art-glow:${char.palette[2]};">
+          <div class="art-halo"></div>
+          ${motifSvg}
+        </div>`;
+    }
+
+    function fillVisual(container, char) {
+      container.innerHTML = "";
+      if (char.img && char.img.trim() !== "") {
+        const img = document.createElement("img");
+        img.src = char.img;
+        img.alt = char.name;
+        img.loading = "lazy";
+        img.decoding = "async";
+        img.onerror = () => { container.innerHTML = getAbstractArtHTML(char); };
+        container.appendChild(img);
+      } else {
+        container.innerHTML = getAbstractArtHTML(char);
+      }
+    }
+
+    function fireWaveRing(x, y, elId = "wave-ring-1", soft = false) {
+      const ring = document.getElementById(elId);
+      if (!ring) return;
+      ring.style.left = `${x}px`;
+      ring.style.top = `${y}px`;
+      ring.classList.remove("is-firing", "is-soft");
+      void ring.offsetWidth;
+      ring.classList.add(soft ? "is-soft" : "is-firing");
+    }
+
+    let toastTimer = null;
+    function showToast(msg) {
+      const el = document.getElementById("toast-note");
+      el.textContent = msg;
+      el.classList.add("is-shown");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove("is-shown"), 2400);
+    }
+
+    /* =========================================================================
+       PHẦN E: QUẠT TRẢI BÀI ẢO HÓA (<= 7 LÁ), LỌC & TÌM KIẾM
+       ========================================================================= */
+    let activeTag = "ALL";
+    let searchQuery = "";
+    let filteredChars = [...CHARACTERS];
+    let cardSlots = [];
+
+    let virtualPos = 0;
+    let targetPos = 0;
+    let lastCenterIdx = -1;
+    let rafId = null;
+
+    let isPointerDown = false;
+    let pointerStartX = 0;
+    let pointerLastX = 0;
+    let pointerLastTime = 0;
+    let velocity = 0;
+    let dragStartPos = 0;
+    let movedDist = 0;
+
+    let isDrawing = false;
+    let pendingFanRestore = false;
+    let gachaHoldTimer = null;
+    let gachaRevealedChar = null;
+    let activeDossierChar = null;
+    let lastFeedbackSubmitTs = 0;
+
+    function closeAllPopovers() {
+      document.getElementById("dir-popover").classList.remove("is-open");
+      document.getElementById("dir-btn").classList.remove("is-open");
+      document.getElementById("dir-btn").setAttribute("aria-expanded", "false");
+      document.getElementById("playlist-popover").classList.remove("is-open");
+      document.getElementById("fish-disc-btn").setAttribute("aria-expanded", "false");
+    }
+
+    function openMenuOverlay() {
+      closeAllPopovers();
+      document.getElementById("menu-overlay").classList.add("is-open");
+      document.getElementById("menu-btn").classList.add("is-open");
+      document.getElementById("menu-btn").setAttribute("aria-expanded", "true");
+    }
+
+    function closeMenuOverlay() {
+      document.getElementById("menu-overlay").classList.remove("is-open");
+      document.getElementById("menu-btn").classList.remove("is-open");
+      document.getElementById("menu-btn").setAttribute("aria-expanded", "false");
+    }
+
+    function renderDirectoryGroups() {
+      const container = document.getElementById("tag-groups-grid");
+      container.innerHTML = "";
+      TAG_GROUPS.forEach((group) => {
+        const block = document.createElement("div");
+        const title = document.createElement("p");
+        title.className = "tag-group-title";
+        title.textContent = group.title;
+        block.appendChild(title);
+
+        const list = document.createElement("div");
+        list.className = "tag-group-list";
+
+        group.tags.forEach((tag) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "dir-tag-btn" + (activeTag === tag ? " is-active" : "");
+          btn.textContent = tag;
+          btn.addEventListener("click", () => {
+            if (isDrawing) return;
+            activeTag = activeTag === tag ? "ALL" : tag;
+            closeAllPopovers();
+            syncFilterUI();
+            rebuildDeck();
+            musicPlayer.sfxDrop(560);
+          });
+          list.appendChild(btn);
+        });
+
+        block.appendChild(list);
+        container.appendChild(block);
+      });
+    }
+
+    function syncFilterUI() {
+      const dirBtn = document.getElementById("dir-btn");
+      const dirLabel = document.getElementById("dir-btn-label");
+      const dirAllBtn = document.getElementById("dir-all-btn");
+      const savedMenuBtn = document.getElementById("menu-saved-btn");
+      const savedCount = document.getElementById("menu-saved-count");
+      const pill = document.getElementById("active-filter-pill");
+      const pillText = document.getElementById("active-filter-text");
+
+      savedCount.textContent = String(savedIds.size);
+      savedMenuBtn.classList.toggle("is-active", activeTag === "SAVED");
+      dirAllBtn.classList.toggle("is-active", activeTag === "ALL");
+
+      if (activeTag === "ALL") {
+        dirLabel.textContent = "Mục lục";
+        dirBtn.classList.remove("has-filter");
+      } else if (activeTag === "SAVED") {
+        dirLabel.textContent = "♥ Đã lưu";
+        dirBtn.classList.add("has-filter");
+      } else {
+        dirLabel.textContent = activeTag;
+        dirBtn.classList.add("has-filter");
+      }
+
+      if (activeTag !== "ALL" || searchQuery.trim() !== "") {
+        const parts = [];
+        if (activeTag === "SAVED") parts.push("♥ Đã lưu");
+        else if (activeTag !== "ALL") parts.push(`#${activeTag}`);
+        if (searchQuery.trim() !== "") parts.push(`“${searchQuery.trim()}”`);
+        pillText.textContent = parts.join(" · ");
+        pill.classList.add("is-shown");
+      } else {
+        pill.classList.remove("is-shown");
+      }
+
+      document.querySelectorAll(".dir-tag-btn").forEach((btn) => {
+        btn.classList.toggle("is-active", btn.textContent === activeTag);
+      });
+    }
+
+    function renderMenuMeta() {
+      const recentList = document.getElementById("recent-list");
+      recentList.innerHTML = "";
+      const recentThree = [...CHARACTERS]
+        .sort((a, b) => (b.date || "").localeCompare(a.date || ""))
+        .slice(0, 3);
+
+      recentThree.forEach((char) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "recent-item";
+        btn.innerHTML = `
+          <span class="recent-name">${char.name}</span>
+          <span class="recent-date tabular">${formatDateVN(char.date)}</span>
+        `;
+        btn.addEventListener("click", () => {
+          closeMenuOverlay();
+          if (isDrawing) return;
+          let targetIdx = filteredChars.findIndex((c) => c.id === char.id);
+          if (targetIdx === -1) {
+            activeTag = "ALL";
+            searchQuery = "";
+            document.getElementById("search-input").value = "";
+            document.getElementById("search-clear").classList.remove("is-shown");
+            syncFilterUI();
+            rebuildDeck();
+            targetIdx = filteredChars.findIndex((c) => c.id === char.id);
+          }
+          if (targetIdx !== -1) goToIndex(targetIdx, true);
+        });
+        recentList.appendChild(btn);
+      });
+
+      const socialGrid = document.getElementById("social-grid");
+      const links = [
+        { label: "Discord", url: SOCIAL_LINKS.discord, wide: false },
+        { label: "Facebook", url: SOCIAL_LINKS.facebook, wide: false },
+        { label: "NGL · Hòm thư ẩn danh", url: SOCIAL_LINKS.ngl, wide: true },
+        { label: "Góp idea (NGL)", url: SOCIAL_LINKS.ngl, wide: false },
+        { label: "Báo lỗi (NGL)", url: SOCIAL_LINKS.ngl, wide: false }
+      ];
+      socialGrid.innerHTML = "";
+      links.forEach((item) => {
+        const a = document.createElement("a");
+        a.className = "social-link" + (item.wide ? " is-wide" : "");
+        a.href = item.url || "#";
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        a.innerHTML = `<span>${item.label}</span><span class="social-arrow" aria-hidden="true">↗</span>`;
+        a.addEventListener("click", (e) => {
+          if (!item.url || item.url.includes("your-")) {
+            e.preventDefault();
+            showToast(`Hãy thay link thật trong SOCIAL_LINKS cho ${item.label}.`);
+          }
+        });
+        socialGrid.appendChild(a);
+      });
+    }
+
+    function toggleLike(charId, heartEl = null) {
+      const willSave = !savedIds.has(charId);
+      if (willSave) {
+        savedIds.add(charId);
+        charRuntime[charId].likes += 1;
+      } else {
+        savedIds.delete(charId);
+        charRuntime[charId].likes = Math.max(0, charRuntime[charId].likes - 1);
+      }
+
+      writeJSON(STORAGE_KEYS.savedIds, Array.from(savedIds));
+      remoteSync.saveStats(charId);
+      musicPlayer.sfxDrop(willSave ? 680 : 420);
+
+      document.querySelectorAll(`.card-heart-btn[data-char-id="${charId}"]`).forEach((btn) => {
+        btn.classList.toggle("is-saved", willSave);
+        if (btn === heartEl) {
+          btn.classList.add("is-bouncing");
+          setTimeout(() => btn.classList.remove("is-bouncing"), 240);
+        }
+      });
+
+      if (activeDossierChar && activeDossierChar.id === charId) {
+        updateDossierStatsUI(activeDossierChar);
+      }
+
+      syncFilterUI();
+
+      if (activeTag === "SAVED" && !willSave && !isDrawing) {
+        rebuildDeck(clampIdx(Math.round(virtualPos)));
+      }
+    }
+
+    function getFanMetrics() {
+      const vw = window.innerWidth;
+      if (vw <= 768) {
+        const cw = Math.max(224, Math.min(250, vw * 0.65));
+        return {
+          stepX: cw * 0.64,
+          arcDrop: 20,
+          rotStep: 8.2,
+          scaleDrop: 0.085,
+          centerLift: -11,
+          dragFactor: cw * 0.80
+        };
+      }
+      return {
+        stepX: 206,
+        arcDrop: 24,
+        rotStep: 7.8,
+        scaleDrop: 0.075,
+        centerLift: -14,
+        dragFactor: 250
+      };
+    }
+
+    function clampIdx(pos) {
+      if (filteredChars.length <= 1) return 0;
+      return Math.max(0, Math.min(filteredChars.length - 1, pos));
+    }
+
+    function syncCenterAtmosphere(idx) {
+      if (idx === lastCenterIdx || !filteredChars[idx]) return;
+      lastCenterIdx = idx;
+      const char = filteredChars[idx];
+
+      document.getElementById("live-card-status").innerHTML =
+        `<strong>${padTwo(idx + 1)}</strong> / ${padTwo(filteredChars.length)} · ${formatDepth(char.depth)}`;
+
+      const ratio = Math.max(0, Math.min(1, (Math.abs(char.depth) - 60) / (3800 - 60)));
+      document.documentElement.style.setProperty("--depth-darkness", (0.06 + ratio * 0.44).toFixed(3));
+    }
+
+    /* Ảo hóa quạt bài: tối đa 7 lá (|offset| <= 3) được vẽ trong vùng nhìn */
+    function renderFan() {
+      if (isDrawing || cardSlots.length === 0) return;
+
+      const m = getFanMetrics();
+      const nearest = clampIdx(Math.round(virtualPos));
+      syncCenterAtmosphere(nearest);
+
+      for (let i = 0; i < cardSlots.length; i++) {
+        const slot = cardSlots[i];
+        const offset = i - virtualPos;
+        const absOff = Math.abs(offset);
+
+        if (absOff > 3.12) {
+          if (slot.dataset.vis !== "0") {
+            slot.style.visibility = "hidden";
+            slot.style.opacity = "0";
+            slot.style.pointerEvents = "none";
+            slot.classList.remove("is-center");
+            slot.dataset.vis = "0";
+          }
+          continue;
+        }
+
+        if (slot.dataset.vis !== "1") {
+          slot.style.visibility = "visible";
+          slot.style.pointerEvents = "auto";
+          slot.dataset.vis = "1";
+        }
+
+        const tx = offset * m.stepX;
+        const lift = absOff < 1 ? (1 - absOff) * m.centerLift : 0;
+        const ty = offset * offset * m.arcDrop + lift;
+        const rot = offset * m.rotStep;
+        const sc = Math.max(0.74, 1 - absOff * m.scaleDrop);
+        const op = Math.max(0.16, 1 - absOff * 0.27);
+        const z = 40 - Math.round(absOff * 10);
+
+        slot.style.transform = `translate3d(${tx.toFixed(1)}px, ${ty.toFixed(1)}px, 0) rotate(${rot.toFixed(2)}deg) scale(${sc.toFixed(3)})`;
+        slot.style.opacity = op.toFixed(3);
+        slot.style.zIndex = String(z);
+        slot.classList.toggle("is-center", absOff < 0.34);
+      }
+
+      /* Xoay nhẹ vòng hải đồ khớp nhịp vuốt trong khi vỏ sò đứng yên kiêu hãnh */
+      document.getElementById("nautical-ring").style.transform = `rotate(${(-virtualPos * 5.8).toFixed(2)}deg)`;
+    }
+
+    function wakeFanLoop() {
+      if (rafId) return;
+      function frame() {
+        if (isDrawing) { rafId = null; return; }
+        const diff = targetPos - virtualPos;
+        const lerp = isPointerDown ? 0.36 : 0.145;
+        if (!isPointerDown && Math.abs(diff) < 0.0018) {
+          virtualPos = targetPos;
+          renderFan();
+          rafId = null;
+          return;
+        }
+        virtualPos += diff * lerp;
+        renderFan();
+        rafId = requestAnimationFrame(frame);
+      }
+      rafId = requestAnimationFrame(frame);
+    }
+
+    function goToIndex(idx, withSfx = true) {
+      if (isDrawing || filteredChars.length === 0) return;
+      const clamped = clampIdx(idx);
+      if (clamped !== Math.round(targetPos) && withSfx) {
+        musicPlayer.sfxDrop(480 + (clamped % 5) * 28);
+      }
+      targetPos = clamped;
+      wakeFanLoop();
+    }
+
+    function createSpecimenCard(char, idx) {
+      const tier = getDepthTier(char);
+      const isSaved = savedIds.has(char.id);
+
+      const slot = document.createElement("article");
+      slot.className = `card-slot ${tier.className}`;
+      slot.setAttribute("role", "button");
+      slot.setAttribute("tabindex", "0");
+      slot.setAttribute("aria-label", `${char.name} — ${formatDepth(char.depth)}`);
+
+      const flipper = document.createElement("div");
+      flipper.className = "card-flipper";
+
+      const front = document.createElement("div");
+      front.className = "card-face card-front";
+
+      const doubleRim = document.createElement("div");
+      doubleRim.className = "card-double-rim";
+      doubleRim.setAttribute("aria-hidden", "true");
+      front.appendChild(doubleRim);
+
+      const sheen = document.createElement("div");
+      sheen.className = "card-sheen";
+      sheen.setAttribute("aria-hidden", "true");
+      front.appendChild(sheen);
+
+      if (tier.key === "abyss") {
+        const crackWrap = document.createElement("div");
+        crackWrap.innerHTML = ABYSS_CRACK_SVG;
+        front.appendChild(crackWrap.firstElementChild);
+      }
+
+      const heartBtn = document.createElement("button");
+      heartBtn.type = "button";
+      heartBtn.className = "card-heart-btn" + (isSaved ? " is-saved" : "");
+      heartBtn.dataset.charId = char.id;
+      heartBtn.setAttribute("aria-label", `Thả tim ${char.name}`);
+      heartBtn.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+          <path d="M12 20.4s-7.4-4.7-9.2-9.1C1.4 7.8 3.6 4.5 7 4.5c2 0 3.6 1.1 5 2.8 1.4-1.7 3-2.8 5-2.8 3.4 0 5.6 3.3 4.2 6.8-1.8 4.4-9.2 9.1-9.2 9.1Z"/>
+        </svg>`;
+      heartBtn.addEventListener("pointerdown", (e) => e.stopPropagation());
+      heartBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (isDrawing) return;
+        toggleLike(char.id, heartBtn);
+      });
+      front.appendChild(heartBtn);
+
+      const archFrame = document.createElement("div");
+      archFrame.className = "arch-frame";
+      const visual = document.createElement("div");
+      visual.className = "arch-visual";
+      fillVisual(visual, char);
+      archFrame.appendChild(visual);
+
+      const grain = document.createElement("div");
+      grain.className = "film-grain";
+      grain.setAttribute("aria-hidden", "true");
+      archFrame.appendChild(grain);
+
+      const fade = document.createElement("div");
+      fade.className = "arch-fade";
+      fade.setAttribute("aria-hidden", "true");
+      archFrame.appendChild(fade);
+      front.appendChild(archFrame);
+
+      const waterline = document.createElement("div");
+      waterline.className = "waterline";
+      waterline.setAttribute("aria-hidden", "true");
+      front.appendChild(waterline);
+
+      const info = document.createElement("div");
+      info.className = "card-info";
+      const tagsHTML = char.tags.map((t) => `<span class="archive-tag">${t}</span>`).join("");
+      info.innerHTML = `
+        <h2 class="card-name font-serif">${char.name}</h2>
+        <div class="card-tags">${tagsHTML}</div>
+      `;
+      front.appendChild(info);
+
+      const foot = document.createElement("div");
+      foot.className = "card-foot tabular";
+      foot.innerHTML = `
+        <span class="card-date">${formatDateVN(char.date)}</span>
+        <span class="card-depth-badge">
+          <span>${formatDepth(char.depth)}</span>
+          <span class="tier-glyph" aria-hidden="true">${tier.glyph}</span>
+        </span>
+      `;
+      front.appendChild(foot);
+
+      const back = document.createElement("div");
+      back.className = "card-face card-back";
+      back.innerHTML = `
+        <div class="card-double-rim" aria-hidden="true"></div>
+        <span class="back-caption">ARIEL · ARCHIVE</span>
+        ${CARD_BACK_SVG}
+        <span class="back-caption">ĐÁY BIỂN SÂU</span>
+      `;
+
+      flipper.appendChild(front);
+      flipper.appendChild(back);
+      slot.appendChild(flipper);
+
+      slot.addEventListener("click", () => {
+        if (movedDist > 8) return;
+        /* Nếu đang ở Nhịp 5 (dừng ngắm lá vừa rút), chạm thẳng vào lá sẽ mở ngay hồ sơ */
+        if (isDrawing && gachaRevealedChar && gachaRevealedChar.id === char.id) {
+          finishGachaAndOpenDossier(char);
+          return;
+        }
+        if (isDrawing) return;
+        closeAllPopovers();
+        if (Math.abs(idx - virtualPos) < 0.34) openDossier(char);
+        else goToIndex(idx, true);
+      });
+
+      slot.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          if (isDrawing && gachaRevealedChar && gachaRevealedChar.id === char.id) {
+            finishGachaAndOpenDossier(char);
+            return;
+          }
+          if (isDrawing) return;
+          if (Math.abs(idx - virtualPos) < 0.34) openDossier(char);
+          else goToIndex(idx, true);
+        }
+      });
+
+      return slot;
+    }
+
+    function rebuildDeck(preserveIndex = null) {
+      const q = searchQuery.trim().toLowerCase();
+      filteredChars = CHARACTERS.filter((c) => {
+        if (activeTag === "SAVED" && !savedIds.has(c.id)) return false;
+        if (activeTag !== "ALL" && activeTag !== "SAVED") {
+          const matchedTag = c.tags.some((t) => t.toLowerCase() === activeTag.toLowerCase());
+          if (!matchedTag) return false;
+        }
+        if (!q) return true;
+        const hay = `${c.name} ${c.tags.join(" ")} ${formatDepth(c.depth)} ${formatDateVN(c.date)}`.toLowerCase();
+        return hay.includes(q);
+      });
+
+      const track = document.getElementById("fan-track");
+      const emptyState = document.getElementById("empty-state");
+      const emptyMsg = document.getElementById("empty-msg");
+      const prevBtn = document.getElementById("prev-btn");
+      const nextBtn = document.getElementById("next-btn");
+
+      track.innerHTML = "";
+      cardSlots = [];
+      lastCenterIdx = -1;
+
+      if (filteredChars.length === 0) {
+        emptyMsg.textContent = activeTag === "SAVED"
+          ? "Lưới cá đã lưu đang trống — hãy thả tim vài nhân vật bạn thích nhé."
+          : "Vùng nước này chưa có nhân vật nào khớp với bộ lọc hiện tại.";
+        emptyState.classList.add("is-visible");
+        prevBtn.style.opacity = "0.25";
+        nextBtn.style.opacity = "0.25";
+        document.getElementById("live-card-status").innerHTML = "<strong>00</strong> / 00";
+        return;
+      }
+
+      emptyState.classList.remove("is-visible");
+      prevBtn.style.opacity = filteredChars.length > 1 ? "1" : "0.3";
+      nextBtn.style.opacity = filteredChars.length > 1 ? "1" : "0.3";
+
+      const startIdx = preserveIndex !== null
+        ? Math.max(0, Math.min(filteredChars.length - 1, preserveIndex))
+        : 0;
+
+      virtualPos = startIdx;
+      targetPos = startIdx;
+
+      const frag = document.createDocumentFragment();
+      filteredChars.forEach((char, idx) => {
+        const el = createSpecimenCard(char, idx);
+        frag.appendChild(el);
+        cardSlots.push(el);
+      });
+
+      track.appendChild(frag);
+      renderFan();
+    }
+
+    /* =========================================================================
+       PHẦN F: HIỆU ỨNG "CÂU CÁ" 5 NHỊP CHẬM RÃI, ĐẦY KỊCH TÍNH (~4.8 GIÂY)
+       - Nhịp 1 (0–1050ms): Úp mặt lưng 3D có độ trễ từ rìa vào tâm & gom thành xấp bài
+       - Nhịp 2 (1050–1900ms): Tách xấp 2 chiều (±38px, ±6deg), dừng nhịp rồi đan nhập lại + sóng nhẹ
+       - Nhịp 3 (1900–2850ms): Xấp bên dưới chìm mờ xuống; 1 lá úp mặt trồi lên giữa + hào quang 1px
+       - Nhịp 4 (2850–3800ms): Lật 3D chậm mượt 950ms + vệt ánh xà cừ + 2 vòng sóng đồng tâm 1px
+       - Nhịp 5 (3800–4800ms): Giữ 1 giây ngắm thành quả (chạm mở ngay hoặc tự mở Hồ Sơ)
+       ========================================================================= */
+    function setGachaWhisper(html, clickable = false) {
+      const el = document.getElementById("gacha-whisper");
+      if (!html) {
+        el.classList.remove("is-shown", "is-clickable");
+        return;
+      }
+      el.innerHTML = html;
+      el.classList.add("is-shown");
+      el.classList.toggle("is-clickable", clickable);
+    }
+
+    function finishGachaAndOpenDossier(pickedChar) {
+      if (gachaHoldTimer) {
+        clearTimeout(gachaHoldTimer);
+        gachaHoldTimer = null;
+      }
+      gachaRevealedChar = null;
+      setGachaWhisper("");
+      document.getElementById("gacha-halo").classList.remove("is-active");
+
+      cardSlots.forEach((slot) => {
+        const flipper = slot.querySelector(".card-flipper");
+        flipper.classList.remove("is-cinematic-reveal");
+        if (!slot.classList.contains("is-center")) {
+          flipper.classList.remove("is-flipped");
+        }
+      });
+
+      pendingFanRestore = true;
+      isDrawing = false;
+      openDossier(pickedChar);
+    }
+
+    function runFishingGacha() {
+      if (isDrawing) return;
+
+      if (filteredChars.length === 0) {
+        activeTag = "ALL";
+        searchQuery = "";
+        document.getElementById("search-input").value = "";
+        document.getElementById("search-clear").classList.remove("is-shown");
+        syncFilterUI();
+        rebuildDeck();
+      }
+
+      closeDossier(true);
+      isDrawing = true;
+      pendingFanRestore = false;
+      gachaRevealedChar = null;
+
+      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+      if (gachaHoldTimer) { clearTimeout(gachaHoldTimer); gachaHoldTimer = null; }
+
+      const currentIdx = clampIdx(Math.round(virtualPos));
+      let pickedIdx = Math.floor(Math.random() * filteredChars.length);
+      if (filteredChars.length > 1 && pickedIdx === currentIdx) {
+        pickedIdx = (pickedIdx + 1 + Math.floor(Math.random() * (filteredChars.length - 1))) % filteredChars.length;
+      }
+      const pickedChar = filteredChars[pickedIdx];
+
+      const visibleIndices = [];
+      for (let i = 0; i < cardSlots.length; i++) {
+        if (Math.abs(i - virtualPos) <= 3.12) visibleIndices.push(i);
+      }
+
+      const stageRect = document.querySelector(".stage-wrap").getBoundingClientRect();
+      const cx = stageRect.left + stageRect.width / 2;
+      const cy = stageRect.top + stageRect.height * 0.45;
+      const haloEl = document.getElementById("gacha-halo");
+
+      /* ── NHỊP 1 (0 – 1050ms): Úp mặt lưng chậm từ rìa vào giữa & gom xấp bài ── */
+      setGachaWhisper(`<span class="gacha-whisper-accent">◦</span> Đang thu hồi mảnh ký ức...`);
+      const maxEdgeDist = visibleIndices.reduce((m, idx) => Math.max(m, Math.abs(idx - currentIdx)), 1);
+
+      visibleIndices.forEach((idx, order) => {
+        const slot = cardSlots[idx];
+        const flipper = slot.querySelector(".card-flipper");
+        const distFromCenter = Math.abs(idx - currentIdx);
+        /* Stagger từ các lá ngoài rìa vào lá trung tâm */
+        const staggerMs = Math.round((maxEdgeDist - distFromCenter) * 75);
+        const offsetX = ((order - (visibleIndices.length - 1) / 2) * 1.8).toFixed(1);
+        const offsetY = (12 + order * 1.6).toFixed(1);
+        const tilt = ((order - (visibleIndices.length - 1) / 2) * 1.9).toFixed(2);
+
+        slot.classList.remove("is-center", "is-sheen-burst");
+        flipper.classList.remove("is-cinematic-reveal");
+        slot.style.zIndex = String(24 + order);
+
+        setTimeout(() => {
+          slot.style.transition = "transform 0.78s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.60s ease";
+          slot.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 0) rotate(${tilt}deg) scale(0.91)`;
+          slot.style.opacity = idx === currentIdx ? "1" : "0.88";
+          flipper.classList.add("is-flipped");
+        }, staggerMs);
+      });
+      musicPlayer.sfxDrop(420);
+
+      /* ── NHỊP 2 (1050 – 1900ms): Tách xấp 2 chiều (±38px, ±6deg) rồi đan gọn lại ── */
+      setTimeout(() => {
+        setGachaWhisper(`<span class="gacha-whisper-accent">◦◦</span> Đang thả câu xuống đáy vực...`);
+
+        /* Đảm bảo lá trúng thưởng nằm gọn bên trong xấp bài ở trạng thái úp mặt */
+        const pickedSlot = cardSlots[pickedIdx];
+        const pickedFlipper = pickedSlot.querySelector(".card-flipper");
+        if (!visibleIndices.includes(pickedIdx)) {
+          pickedSlot.style.transition = "none";
+          pickedFlipper.style.transition = "none";
+          pickedFlipper.classList.add("is-flipped");
+          pickedSlot.style.visibility = "visible";
+          pickedSlot.style.pointerEvents = "auto";
+          pickedSlot.dataset.vis = "1";
+          pickedSlot.style.transform = "translate3d(0, 14px, 0) rotate(0deg) scale(0.91)";
+          pickedSlot.style.opacity = "1";
+          void pickedSlot.offsetWidth;
+          pickedFlipper.style.transition = "";
+          visibleIndices.push(pickedIdx);
+        }
+
+        /* Pha 2A: Tách xấp sang hai bên trái/phải */
+        visibleIndices.forEach((idx, order) => {
+          const slot = cardSlots[idx];
+          const isLeft = order % 2 === 0;
+          const dx = isLeft ? -38 : 38;
+          const rot = isLeft ? -6 : 6;
+          slot.style.transition = "transform 0.38s cubic-bezier(0.22, 1, 0.36, 1)";
+          slot.style.transform = `translate3d(${dx}px, ${(12 + order * 1.2).toFixed(1)}px, 0) rotate(${rot}deg) scale(0.90)`;
+        });
+        musicPlayer.sfxDrop(490);
+
+        /* Pha 2B: Dừng nhẹ rồi đan nhập mượt về giữa kèm sóng mềm */
+        setTimeout(() => {
+          visibleIndices.forEach((idx, order) => {
+            const slot = cardSlots[idx];
+            const tilt = ((order - (visibleIndices.length - 1) / 2) * 1.1).toFixed(2);
+            slot.style.transition = "transform 0.38s cubic-bezier(0.22, 1, 0.36, 1)";
+            slot.style.transform = `translate3d(0, ${(12 + order * 1.2).toFixed(1)}px, 0) rotate(${tilt}deg) scale(0.91)`;
+          });
+          fireWaveRing(cx, cy, "wave-ring-2", true);
+          musicPlayer.sfxDrop(560);
+        }, 430);
+      }, 1050);
+
+      /* ── NHỊP 3 (1900 – 2850ms): Xấp dưới chìm mờ, 1 lá úp trồi lên giữa + hào quang 1px ── */
+      setTimeout(() => {
+        const pickedSlot = cardSlots[pickedIdx];
+        pickedSlot.style.zIndex = "95";
+        haloEl.classList.add("is-active");
+        setGachaWhisper(`<span class="gacha-whisper-accent">✦</span> Một mảnh ký ức đang trồi lên...`);
+
+        visibleIndices.forEach((idx) => {
+          if (idx === pickedIdx) return;
+          const slot = cardSlots[idx];
+          slot.style.transition = "transform 0.78s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.72s ease";
+          slot.style.transform = "translate3d(0, 56px, 0) rotate(0deg) scale(0.86)";
+          slot.style.opacity = "0.18";
+        });
+
+        pickedSlot.style.transition = "transform 0.85s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease";
+        pickedSlot.style.transform = "translate3d(0, -16px, 0) rotate(0deg) scale(1.08)";
+        pickedSlot.style.opacity = "1";
+        musicPlayer.sfxDrop(620);
+      }, 1900);
+
+      /* ── NHỊP 4 (2850 – 3800ms): Lật mặt 3D chậm rãi 950ms + ánh xà cừ + 2 vòng sóng 1px ── */
+      setTimeout(() => {
+        const pickedSlot = cardSlots[pickedIdx];
+        const pickedFlipper = pickedSlot.querySelector(".card-flipper");
+
+        pickedFlipper.classList.add("is-cinematic-reveal");
+        pickedFlipper.classList.remove("is-flipped");
+        pickedSlot.classList.add("is-center", "is-sheen-burst");
+
+        fireWaveRing(cx, cy, "wave-ring-1", false);
+        setTimeout(() => fireWaveRing(cx, cy, "wave-ring-2", true), 190);
+        musicPlayer.sfxReveal();
+
+        virtualPos = pickedIdx;
+        targetPos = pickedIdx;
+        syncCenterAtmosphere(pickedIdx);
+      }, 2850);
+
+      /* ── NHỊP 5 (3800 – 4800ms): Dừng 1 giây ngắm thành quả (chạm mở ngay) ── */
+      setTimeout(() => {
+        gachaRevealedChar = pickedChar;
+        setGachaWhisper(
+          `<span class="gacha-whisper-accent">✦</span> Đã vớt lên · <strong>${pickedChar.name}</strong> · ${formatDepth(pickedChar.depth)} — Chạm để mở ngay`,
+          true
+        );
+
+        gachaHoldTimer = setTimeout(() => {
+          finishGachaAndOpenDossier(pickedChar);
+        }, 1050);
+      }, 3800);
+    }
+
+    function restoreFanGracefully() {
+      if (!pendingFanRestore) return;
+      pendingFanRestore = false;
+
+      cardSlots.forEach((slot) => {
+        slot.classList.remove("is-sheen-burst");
+        const flipper = slot.querySelector(".card-flipper");
+        flipper.classList.remove("is-flipped", "is-cinematic-reveal");
+        slot.style.transition = "transform 0.56s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.46s ease";
+      });
+
+      renderFan();
+
+      setTimeout(() => {
+        cardSlots.forEach((slot) => { slot.style.transition = ""; });
+      }, 580);
+    }
+
+    /* =========================================================================
+       PHẦN G: KHUNG HỒ SƠ CHI TIẾT (EDITORIAL DOSSIER — 2 TAB + STICKY FOOTER)
+       ========================================================================= */
+    function switchDossierTab(tabName) {
+      document.querySelectorAll(".dossier-tab-btn").forEach((btn) => {
+        const active = btn.dataset.tab === tabName;
+        btn.classList.toggle("is-active", active);
+        btn.setAttribute("aria-selected", active ? "true" : "false");
+      });
+      document.getElementById("panel-bio").classList.toggle("is-active", tabName === "bio");
+      document.getElementById("panel-feedback").classList.toggle("is-active", tabName === "feedback");
+      document.getElementById("dossier-body").scrollTop = 0;
+    }
+
+    function updateDossierStatsUI(char) {
+      const rt = charRuntime[char.id];
+      const isSaved = savedIds.has(char.id);
+
+      document.getElementById("d-metrics").innerHTML = `
+        <span><span class="metric-accent">${isSaved ? "♥" : "♡"}</span> ${rt.likes}</span>
+        <span>·</span>
+        <span><span class="metric-accent">↗</span> ${rt.chats} lượt chat</span>
+        <span>·</span>
+        <span>${formatDepth(char.depth)}</span>
+      `;
+      document.getElementById("d-fb-count").textContent = `(${rt.feedbacks.length})`;
+      document.getElementById("d-footer-likes").textContent = String(rt.likes);
+      document.getElementById("d-heart-btn").classList.toggle("is-saved", isSaved);
+    }
+
+    function renderFeedbackList(charId) {
+      const list = document.getElementById("feedback-list");
+      const items = charRuntime[charId].feedbacks || [];
+      document.getElementById("d-fb-count").textContent = `(${items.length})`;
+      list.innerHTML = "";
+
+      if (items.length === 0) {
+        list.innerHTML = `<p class="fb-empty font-serif">Chưa có hồi âm nào dưới tầng nước này. Hãy là người đầu tiên nhắn gửi nhé.</p>`;
+        return;
+      }
+
+      items.forEach((fb) => {
+        const card = document.createElement("div");
+        card.className = "fb-card";
+
+        const head = document.createElement("div");
+        head.className = "fb-card-head";
+
+        const author = document.createElement("span");
+        author.className = "fb-author";
+        author.textContent = fb.author;
+
+        const time = document.createElement("span");
+        time.className = "fb-time tabular";
+        time.textContent = fb.time;
+
+        head.appendChild(author);
+        head.appendChild(time);
+
+        const body = document.createElement("p");
+        body.className = "fb-text";
+        body.textContent = fb.text;
+
+        card.appendChild(head);
+        card.appendChild(body);
+        list.appendChild(card);
+      });
+    }
+
+    async function openDossier(char) {
+      activeDossierChar = char;
+      const overlay = document.getElementById("dossier-overlay");
+
+      fillVisual(document.getElementById("d-visual"), char);
+      document.getElementById("d-name").textContent = char.name;
+      document.getElementById("d-tags").innerHTML = char.tags
+        .map((t) => `<span class="archive-tag">${t}</span>`)
+        .join("");
+
+      const tokensEl = document.getElementById("d-tokens-note");
+      tokensEl.textContent = char.tokensNote || "";
+      tokensEl.style.display = char.tokensNote ? "block" : "none";
+
+      const bioContainer = document.getElementById("d-bio");
+      bioContainer.innerHTML = "";
+      (char.lore || "").split(/\n\s*\n/).forEach((para) => {
+        const p = document.createElement("p");
+        p.textContent = para.trim();
+        bioContainer.appendChild(p);
+      });
+
+      updateDossierStatsUI(char);
+      renderFeedbackList(char.id);
+
+      const chatBtn = document.getElementById("d-chat-btn");
+      chatBtn.href = char.chatUrl || "#";
+      document.getElementById("d-chat-label").textContent = `Trò chuyện cùng ${char.name}`;
+
+      switchDossierTab("bio");
+      overlay.classList.add("is-open");
+      musicPlayer.sfxDrop(620);
+
+      if (hasFirebaseConfig()) {
+        await remoteSync.fetchChar(char.id);
+        if (activeDossierChar && activeDossierChar.id === char.id) {
+          updateDossierStatsUI(char);
+          renderFeedbackList(char.id);
+        }
+      }
+    }
+
+    function closeDossier(silent = false) {
+      const overlay = document.getElementById("dossier-overlay");
+      if (!overlay.classList.contains("is-open")) return;
+      overlay.classList.remove("is-open");
+      activeDossierChar = null;
+      if (!silent) musicPlayer.sfxDrop(420);
+      if (pendingFanRestore) {
+        setTimeout(restoreFanGracefully, 90);
+      }
+    }
+
+    function formatNowLabel() {
+      const d = new Date();
+      return `${padTwo(d.getDate())}/${padTwo(d.getMonth() + 1)} · ${padTwo(d.getHours())}:${padTwo(d.getMinutes())}`;
+    }
+
+    /* =========================================================================
+       PHẦN H: KHỞI TẠO & SỰ KIỆN TƯƠNG TÁC
+       ========================================================================= */
+    window.addEventListener("DOMContentLoaded", () => {
+      const savedTheme = readJSON(STORAGE_KEYS.theme, "blue-sea");
+      const initialTheme = savedTheme === "red-sea" ? "red-sea" : "blue-sea";
+      document.documentElement.setAttribute("data-theme", initialTheme);
+      document.querySelectorAll("[data-theme-target]").forEach((orb) => {
+        orb.classList.toggle("is-active", orb.dataset.themeTarget === initialTheme);
+      });
+
+      initNauticalTicks();
+      initRotatingQuotes();
+      renderDirectoryGroups();
+      renderMenuMeta();
+      musicPlayer.renderPlaylist();
+      syncFilterUI();
+      rebuildDeck();
+
+      function handleFirstGesture(e) {
+        if (e.target && e.target.closest("#music-toggle-btn")) return;
+        musicPlayer.tryAutoStart();
+      }
+      document.addEventListener("pointerdown", handleFirstGesture, { once: true });
+      document.addEventListener("keydown", handleFirstGesture, { once: true });
+
+      /* Đổi 2 chế độ màu Biển Xanh / Red Sea */
+      document.querySelectorAll("[data-theme-target]").forEach((orb) => {
+        orb.addEventListener("click", () => {
+          const theme = orb.dataset.themeTarget;
+          document.documentElement.setAttribute("data-theme", theme);
+          writeJSON(STORAGE_KEYS.theme, theme);
+          document.querySelectorAll("[data-theme-target]").forEach((b) => {
+            b.classList.toggle("is-active", b === orb);
+          });
+          const rect = orb.getBoundingClientRect();
+          fireWaveRing(rect.left + rect.width / 2, rect.top + rect.height / 2, "wave-ring-1", false);
+          musicPlayer.sfxDrop(theme === "red-sea" ? 440 : 620);
+        });
+      });
+
+      /* Tìm kiếm trực tiếp */
+      const searchInput = document.getElementById("search-input");
+      const searchClear = document.getElementById("search-clear");
+
+      searchInput.addEventListener("input", (e) => {
+        if (isDrawing) return;
+        searchQuery = e.target.value;
+        searchClear.classList.toggle("is-shown", searchQuery.length > 0);
+        syncFilterUI();
+        rebuildDeck();
+      });
+
+      searchClear.addEventListener("click", () => {
+        searchQuery = "";
+        searchInput.value = "";
+        searchClear.classList.remove("is-shown");
+        syncFilterUI();
+        rebuildDeck();
+      });
+
+      /* Mục lục 25 tag */
+      const dirBtn = document.getElementById("dir-btn");
+      const dirPopover = document.getElementById("dir-popover");
+
+      dirBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const willOpen = !dirPopover.classList.contains("is-open");
+        closeAllPopovers();
+        if (willOpen) {
+          dirPopover.classList.add("is-open");
+          dirBtn.classList.add("is-open");
+          dirBtn.setAttribute("aria-expanded", "true");
+        }
+      });
+
+      document.getElementById("dir-all-btn").addEventListener("click", () => {
+        activeTag = "ALL";
+        closeAllPopovers();
+        syncFilterUI();
+        rebuildDeck();
+      });
+
+      function resetAllFilters() {
+        activeTag = "ALL";
+        searchQuery = "";
+        searchInput.value = "";
+        searchClear.classList.remove("is-shown");
+        syncFilterUI();
+        rebuildDeck();
+      }
+      document.getElementById("clear-filter-pill").addEventListener("click", resetAllFilters);
+      document.getElementById("reset-filter-btn").addEventListener("click", resetAllFilters);
+
+      /* Đĩa con cá xoay tròn & nút dừng/phát */
+      const fishDiscBtn = document.getElementById("fish-disc-btn");
+      const playlistPopover = document.getElementById("playlist-popover");
+
+      fishDiscBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const willOpen = !playlistPopover.classList.contains("is-open");
+        closeAllPopovers();
+        if (willOpen) {
+          playlistPopover.classList.add("is-open");
+          fishDiscBtn.setAttribute("aria-expanded", "true");
+        }
+      });
+
+      document.getElementById("music-toggle-btn").addEventListener("click", (e) => {
+        e.stopPropagation();
+        musicPlayer.toggle();
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest("#dir-popover") && !e.target.closest("#dir-btn") &&
+            !e.target.closest("#playlist-popover") && !e.target.closest("#fish-disc-btn")) {
+          closeAllPopovers();
+        }
+      });
+
+      /* Khung kính thứ 2 (Menu Overlay ☰) */
+      document.getElementById("menu-btn").addEventListener("click", openMenuOverlay);
+      document.getElementById("menu-close-btn").addEventListener("click", closeMenuOverlay);
+      document.getElementById("menu-overlay").addEventListener("click", (e) => {
+        if (e.target.id === "menu-overlay") closeMenuOverlay();
+      });
+
+      /* Bấm Câu cá -> đóng menu trước 260ms rồi bắt đầu 5 nhịp chậm rãi */
+      document.getElementById("menu-gacha-btn").addEventListener("click", () => {
+        closeMenuOverlay();
+        setTimeout(runFishingGacha, 260);
+      });
+
+      /* Chạm thẳng vào dòng caption ở Nhịp 5 cũng mở ngay hồ sơ */
+      document.getElementById("gacha-whisper").addEventListener("click", () => {
+        if (isDrawing && gachaRevealedChar) {
+          finishGachaAndOpenDossier(gachaRevealedChar);
+        }
+      });
+
+      document.getElementById("menu-saved-btn").addEventListener("click", () => {
+        activeTag = activeTag === "SAVED" ? "ALL" : "SAVED";
+        closeMenuOverlay();
+        syncFilterUI();
+        rebuildDeck();
+      });
+
+      const guideAcc = document.getElementById("guide-accordion");
+      const guideTrig = document.getElementById("guide-trigger");
+      guideTrig.addEventListener("click", () => {
+        const opened = guideAcc.classList.toggle("is-open");
+        guideTrig.setAttribute("aria-expanded", opened ? "true" : "false");
+      });
+
+      document.getElementById("go-page-1-btn").addEventListener("click", () => {
+        closeMenuOverlay();
+        if (typeof window.arielHooks.goToPage1 === "function") window.arielHooks.goToPage1();
+        else showToast("Bản xem trước Trang 3 độc lập — nút này sẽ nối về Trang 1 khi ghép đủ 3 trang.");
+      });
+
+      document.getElementById("go-page-2-btn").addEventListener("click", () => {
+        closeMenuOverlay();
+        if (typeof window.arielHooks.goToPage2 === "function") window.arielHooks.goToPage2();
+        else showToast("Bản xem trước Trang 3 độc lập — nút này sẽ nối về mini-game Trang 2 khi ghép.");
+      });
+
+      /* Điều hướng quạt bài: nút ‹ ›, kéo/vuốt cảm ứng, lăn chuột & bàn phím */
+      document.getElementById("prev-btn").addEventListener("click", () => goToIndex(Math.round(targetPos) - 1, true));
+      document.getElementById("next-btn").addEventListener("click", () => goToIndex(Math.round(targetPos) + 1, true));
+
+      const track = document.getElementById("fan-track");
+
+      track.addEventListener("pointerdown", (e) => {
+        if (isDrawing || filteredChars.length <= 1) return;
+        isPointerDown = true;
+        pointerStartX = e.clientX;
+        pointerLastX = e.clientX;
+        pointerLastTime = performance.now();
+        dragStartPos = virtualPos;
+        velocity = 0;
+        movedDist = 0;
+        track.classList.add("is-dragging");
+      });
+
+      window.addEventListener("pointermove", (e) => {
+        if (!isPointerDown) return;
+        const now = performance.now();
+        const dt = Math.max(8, now - pointerLastTime);
+        const stepDx = e.clientX - pointerLastX;
+        const totalDx = e.clientX - pointerStartX;
+        const { dragFactor } = getFanMetrics();
+
+        movedDist = Math.max(movedDist, Math.abs(totalDx));
+        velocity = stepDx / dt;
+
+        const rawPos = dragStartPos - totalDx / dragFactor;
+        const maxBound = Math.max(0, filteredChars.length - 1) + 0.35;
+        targetPos = Math.max(-0.35, Math.min(maxBound, rawPos));
+
+        pointerLastX = e.clientX;
+        pointerLastTime = now;
+        wakeFanLoop();
+      }, { passive: true });
+
+      function endDrag() {
+        if (!isPointerDown) return;
+        isPointerDown = false;
+        track.classList.remove("is-dragging");
+        const inertia = Math.max(-2.1, Math.min(2.1, -velocity * 1.45));
+        const snapped = clampIdx(Math.round(targetPos + inertia));
+        goToIndex(snapped, movedDist > 12);
+      }
+
+      window.addEventListener("pointerup", endDrag);
+      window.addEventListener("pointercancel", endDrag);
+
+      let wheelGuard = 0;
+      track.addEventListener("wheel", (e) => {
+        if (isDrawing || filteredChars.length <= 1) return;
+        if (document.getElementById("dossier-overlay").classList.contains("is-open")) return;
+        if (document.getElementById("menu-overlay").classList.contains("is-open")) return;
+        const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+        if (Math.abs(delta) < 6) return;
+        e.preventDefault();
+        const now = performance.now();
+        if (now - wheelGuard < 130) return;
+        wheelGuard = now;
+        goToIndex(Math.round(targetPos) + (delta > 0 ? 1 : -1), true);
+      }, { passive: false });
+
+      window.addEventListener("keydown", (e) => {
+        const dossierOpen = document.getElementById("dossier-overlay").classList.contains("is-open");
+        const menuOpen = document.getElementById("menu-overlay").classList.contains("is-open");
+
+        if (e.key === "Escape") {
+          if (dossierOpen) closeDossier(false);
+          else if (menuOpen) closeMenuOverlay();
+          else closeAllPopovers();
+          return;
+        }
+        if (dossierOpen || menuOpen || isDrawing) return;
+        const tag = document.activeElement?.tagName;
+        if (tag === "INPUT" || tag === "TEXTAREA") return;
+        if (e.key === "ArrowLeft") goToIndex(Math.round(targetPos) - 1, true);
+        if (e.key === "ArrowRight") goToIndex(Math.round(targetPos) + 1, true);
+      });
+
+      /* Hồ sơ chi tiết */
+      document.getElementById("d-close-btn").addEventListener("click", () => closeDossier(false));
+      document.getElementById("dossier-overlay").addEventListener("click", (e) => {
+        if (e.target.id === "dossier-overlay") closeDossier(false);
+      });
+
+      document.querySelectorAll(".dossier-tab-btn").forEach((btn) => {
+        btn.addEventListener("click", () => switchDossierTab(btn.dataset.tab));
+      });
+
+      document.getElementById("d-heart-btn").addEventListener("click", () => {
+        if (!activeDossierChar) return;
+        toggleLike(activeDossierChar.id);
+      });
+
+      document.getElementById("d-chat-btn").addEventListener("click", () => {
+        if (!activeDossierChar) return;
+        const charId = activeDossierChar.id;
+        if (!sessionChatted.has(charId)) {
+          sessionChatted.add(charId);
+          writeJSON(STORAGE_KEYS.sessionChats, Array.from(sessionChatted));
+          charRuntime[charId].chats += 1;
+          remoteSync.saveStats(charId);
+          updateDossierStatsUI(activeDossierChar);
+        }
+      });
+
+      const fbTextInput = document.getElementById("fb-text-input");
+      const fbCharCount = document.getElementById("fb-char-count");
+      const fbAuthorInput = document.getElementById("fb-author-input");
+
+      fbTextInput.addEventListener("input", () => {
+        fbCharCount.textContent = `${fbTextInput.value.length} / 300`;
+      });
+
+      document.getElementById("feedback-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (!activeDossierChar) return;
+
+        const text = fbTextInput.value.trim();
+        if (!text) {
+          showToast("Hãy viết đôi dòng cảm nhận trước khi gửi nhé.");
+          return;
+        }
+
+        const now = Date.now();
+        const elapsed = Math.floor((now - lastFeedbackSubmitTs) / 1000);
+        if (lastFeedbackSubmitTs && elapsed < 15) {
+          showToast(`Chờ thêm ${15 - elapsed} giây nữa rồi gửi tiếp nhé.`);
+          return;
+        }
+
+        const rawAuthor = fbAuthorInput.value.trim();
+        const author = rawAuthor || SEA_ALIASES[Math.floor(Math.random() * SEA_ALIASES.length)];
+        const entry = {
+          author,
+          text: text.slice(0, 300),
+          time: formatNowLabel(),
+          ts: now
+        };
+
+        lastFeedbackSubmitTs = now;
+        const submitBtn = document.getElementById("fb-submit-btn");
+        submitBtn.disabled = true;
+
+        await remoteSync.addFeedback(activeDossierChar.id, entry);
+        fbTextInput.value = "";
+        fbCharCount.textContent = "0 / 300";
+        renderFeedbackList(activeDossierChar.id);
+        showToast("Đã thả hồi âm xuống đáy biển ✦");
+
+        setTimeout(() => { submitBtn.disabled = false; }, 1200);
+      });
+
+      let resizeTimer = null;
+      window.addEventListener("resize", () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          if (!isDrawing) renderFan();
+        }, 90);
+      });
+    });
+  </script>
+</body>
+</html>

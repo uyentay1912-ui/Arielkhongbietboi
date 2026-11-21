@@ -1,0 +1,6 @@
+{
+  "name": "Ariel không biết bơi",
+  "description": "Trang trưng bày nhân vật tương tác theo chủ đề đại dương vực sâu với hiệu ứng nước dâng, mini-game tiên cá tập bơi, vỏ sò xà cừ gacha và hồ sơ nhân vật 3D holographic.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
